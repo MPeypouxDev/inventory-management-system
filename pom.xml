@@ -25,6 +25,12 @@
 
 	<dependencies>
 
+		<!-- BCrypt pour le hashage des mots de passe -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-crypto</artifactId>
+		</dependency>
+
 		<!-- Spring Boot Data JPA - pour la base de données -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
