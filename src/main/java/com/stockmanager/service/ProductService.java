@@ -36,7 +36,7 @@ public class ProductService {
 
     public void delete(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produit introuvable avec l'id :" + id));
+                .orElseThrow(() -> new RuntimeException("Produit introuvable avec l'id : " + id));
 
         List<?> movements = stockMovementRepository.findByProductId(id);
         if (!movements.isEmpty()) {
