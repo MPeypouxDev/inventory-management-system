@@ -1,9 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.*?>
 
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.stockmanager.controller.ProductController"
-      prefWidth="800" prefHeight="600">
-    <Label text="Vue Produits"/>
+      spacing="10" style="-fx-padding: 20px;">
+
+    <!-- Barre d'outils -->
+    <HBox spacing="10">
+        <Button text="+ Ajouter" onAction="#handleAdd"/>
+        <TextField fx:id="searchField" promptText="Rechercher un produit..."/>
+        <Button text="Rechercher" onAction="#handleSearch"/>
+    </HBox>
+
+    <!-- Tableau -->
+    <TableView fx:id="productTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
+            <TableColumn fx:id="nameColumn" text="Nom" prefWidth="200"/>
+            <TableColumn fx:id="stockColumn" text="Stock" prefWidth="80"/>
+            <TableColumn fx:id="priceColumn" text="Prix vente" prefWidth="100"/>
+            <TableColumn fx:id="categoryColumn" text="Catégorie" prefWidth="120"/>
+        </columns>
+    </TableView>
+
+    <!-- Boutons d'action -->
+    <HBox spacing="10">
+        <Button text="Modifier" onAction="#handleEdit"/>
+        <Button text="Supprimer" onAction="#handleDelete"/>
+    </HBox>
+
 </VBox>
