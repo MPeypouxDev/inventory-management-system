@@ -12,7 +12,7 @@ MERGE INTO users KEY(username) VALUES (1, '$2a$10$MySWp6cCIMRY1TSvWrk0sOS.TnEndL
 MERGE INTO users KEY(username) VALUES (2, '$2a$10$MySWp6cCIMRY1TSvWrk0sOS.TnEndLhZnW0Fm/lbKWVF.ZuO3KJJS', 'USER', 'user');
 
 -- Produits
-MERGE INTO products KEY(name) VALUES (1, 5, 'Ordinateur portable haute performance', 'Laptop Pro 15', 899.99, 1199.99, 10, 1, 1);
-MERGE INTO products KEY(name) VALUES (2, 10, 'Souris ergonomique sans fil', 'Souris Ergonomique', 15.99, 29.99, 25, 1, 1);
-MERGE INTO products KEY(name) VALUES (3, 5, 'Bureau réglable en hauteur', 'Bureau Ajustable', 250.00, 399.99, 8, 3, 2);
-MERGE INTO products KEY(name) VALUES (4, 20, 'Ramette de papier A4 500 feuilles', 'Papier A4', 3.50, 6.99, 100, 2, 2);
+MERGE INTO products KEY(name) VALUES (DEFAULT, 5, 'Ordinateur portable haute performance', 'Laptop Pro 15', 899.99, 1199.99, 10, 1, 1);
+MERGE INTO products KEY(name) VALUES (DEFAULT, 10, 'Souris ergonomique sans fil', 'Souris Ergonomique', 15.99, 29.99, 25, 1, 1);
+MERGE INTO products KEY(name) VALUES (DEFAULT, 5, 'Bureau réglable en hauteur', 'Bureau Ajustable', 250.00, 399.99, 8, 3, 2);
+MERGE INTO products KEY(name) VALUES (DEFAULT, 20, 'Ramette de papier A4 500 feuilles', 'Papier A4', 3.50, 6.99, 100, 2, 2);
