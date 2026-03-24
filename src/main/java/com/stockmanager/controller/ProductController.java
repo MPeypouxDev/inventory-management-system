@@ -125,10 +125,94 @@ public class ProductController {
     }
 
     @FXML
-    private void handleEdit() { }
+    private void handleEdit() {
+        Product selected = productTable.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("Veuillez sélectionner un produit à modifier");
+            alert.showAndWait();
+        } else {
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.setTitle("Modifier un produit");
+            dialog.setHeaderText("Modifier : " + selected.getName());
+
+            dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+            GridPane grid = new GridPane();
+            grid.setHgap(10);
+            grid.setVgap(10);
+
+            TextField nameField = new TextField(selected.getName());
+            TextField descriptionField = new TextField(selected.getDescription());
+            TextField purchasePriceField = new TextField(String.valueOf(selected.getPurchasePrice()));
+            TextField salePriceField =  new TextField(String.valueOf(selected.getSalePrice()));
+            TextField stockField = new TextField(String.valueOf(String.valueOf(selected.getStockQuantity())));
+            TextField thresholdField = new TextField(String.valueOf(selected.getAlertThreshold()));
+
+            ComboBox<Category> categoryCombo = new ComboBox<>();
+            categoryCombo.getItems().addAll(categoryService.findAll());
+            categoryCombo.setValue(selected.getCategory());
+            categoryCombo.setConverter(new javafx.util.StringConverter<Category>() {
+                @Override
+                public String toString(Category category) {
+                    return category != null ? category.getName() : "";
+                }
+                @Override public Category fromString(String string) { return null; }
+            });
+
+            grid.add(new Label("Nom :"), 0, 0);
+            grid.add(nameField, 1, 0);
+            grid.add(new Label("Description :"), 0, 1);
+            grid.add(descriptionField, 1, 1);
+            grid.add(new Label("Prix d'achat :"), 0, 2);
+            grid.add(purchasePriceField, 1, 2);
+            grid.add(new Label("Prix de vente :"), 0, 3);
+            grid.add(salePriceField, 1, 3);
+            grid.add(new Label("Stock :"), 0, 4);
+            grid.add(stockField, 1, 4);
+            grid.add(new Label("Seuil d'alerte :"), 0, 5);
+            grid.add(thresholdField, 1, 5);
+            grid.add(new Label("Catégorie :"), 0, 6);
+            grid.add(categoryCombo, 1, 6);
+
+            dialog.getDialogPane().setContent(grid);
+
+            dialog.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    selected.setName(nameField.getText());
+                    selected.setDescription(descriptionField.getText());
+                    selected.setCategory(categoryCombo.getValue());
+                    selected.setPurchasePrice(Double.parseDouble(purchasePriceField.getText()));
+                    selected.setSalePrice(Double.parseDouble(salePriceField.getText()));
+                    selected.setStockQuantity(Integer.parseInt(stockField.getText()));
+                    selected.setAlertThreshold(Integer.parseInt(thresholdField.getText()));
+
+                    productService.save(selected);
+                    refreshTable();
+                }
+            });
+        }
+    }
 
     @FXML
-    private void handleDelete() { }
+    private void handleDelete() {
+        Product selected = productTable.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("Veuillez sélectionner un produit");
+            alert.showAndWait();
+        } else {
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+            confirm.setTitle("Confirmation");
+            confirm.setContentText("Voulez-vous vraiment supprimer " + selected.getName() + " ?");
+            confirm.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    productService.delete(selected.getId());
+                    refreshTable();
+                }
+            });
+        }
+    }
 
     @FXML
     private void handleSearch() { }
