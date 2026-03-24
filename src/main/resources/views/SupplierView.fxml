@@ -1,9 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
 
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.stockmanager.controller.SupplierController"
-      prefWidth="800" prefHeight="600">
-    <Label text="Vue Fournisseurs"/>
+      spacing="10" style="-fx-padding: 20px">
+
+    <HBox spacing="10">
+        <Button text="+ Ajouter" onAction="#handleAdd"/>
+        <TextField fx:id="searchField" promptText="Rechercher un fournisseur..."/>
+        <Button text="Rechercher" onAction="#handleSearch"/>
+    </HBox>
+
+    <TableView fx:id="supplierTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
+            <TableColumn fx:id="nameColumn" text="Nom" prefWidth="200"/>
+            <TableColumn fx:id="contactColumn" text="Contact" prefWidth="200"/>
+            <TableColumn fx:id="phoneColumn" text="Téléphone" prefWidth="100"/>
+            <TableColumn fx:id="mailColumn" text="Email" prefWidth="200"/>
+            <TableColumn fx:id="addressColumn" text="Adresse" prefWidth="200"/>
+        </columns>
+    </TableView>
+
+    <HBox spacing="10">
+        <Button text="Modifier" onAction="#handleEdit"/>
+        <Button text="Supprimer" onAction="#handleDelete"/>
+    </HBox>
 </VBox>
