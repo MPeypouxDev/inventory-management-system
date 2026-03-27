@@ -7,14 +7,12 @@
       fx:controller="com.stockmanager.controller.ProductController"
       spacing="10" style="-fx-padding: 20px;">
 
-    <!-- Barre d'outils -->
     <HBox spacing="10">
         <Button text="+ Ajouter" onAction="#handleAdd"/>
         <TextField fx:id="searchField" promptText="Rechercher un produit..."/>
         <Button text="Rechercher" onAction="#handleSearch"/>
     </HBox>
 
-    <!-- Tableau -->
     <TableView fx:id="productTable" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
@@ -25,7 +23,6 @@
         </columns>
     </TableView>
 
-    <!-- Boutons d'action -->
     <HBox spacing="10">
         <Button text="Modifier" onAction="#handleEdit"/>
         <Button text="Supprimer" onAction="#handleDelete"/>
