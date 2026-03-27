@@ -1,9 +1,12 @@
 package com.stockmanager.controller;
 
+import com.stockmanager.service.ProductService;
+import com.stockmanager.model.Product;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.control.Label;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.VBox;
 import org.springframework.stereotype.Component;
@@ -11,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 public class MainController {
@@ -20,6 +24,12 @@ public class MainController {
 
     @FXML
     private VBox contentArea;
+
+    @FXML
+    private Label alertLabel;
+
+    @Autowired
+    private ProductService productService;
 
     @FXML
     private void showProducts() { loadView("/views/ProductView.fxml"); }
@@ -53,6 +63,15 @@ public class MainController {
             contentArea.getChildren().add(root);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void initialize() {
+        List<Product> lowStock = productService.findLowStockProducts();
+        if (lowStock.isEmpty()) {
+            alertLabel.setText("");
+        } else {
+            alertLabel.setText("Attention " + lowStock.size() + " produit(s) en alerte stock !");
         }
     }
 }

@@ -230,6 +230,20 @@ public class ProductController {
                 )
         );
 
+        productTable.setRowFactory(tv -> new TableRow<Product>() {
+            @Override
+            protected void updateItem(Product product, boolean empty) {
+                super.updateItem(product, empty);
+                if (product == null || empty) {
+                    setStyle("");
+                } else if (product.getStockQuantity() <= product.getAlertThreshold()) {
+                    setStyle("-fx-background-color: #ffcccc");
+                } else {
+                    setStyle("");
+                }
+            }
+        });
+
         ObservableList<Product> products = FXCollections.observableArrayList(productService.findAll());
         productTable.setItems(products);
     }
