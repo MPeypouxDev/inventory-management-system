@@ -9,4 +9,5 @@ import java.util.List;
 public interface StockMovementRepository extends JpaRepository<StockMovement, Long> {
 
     List<StockMovement> findByProductId(Long productId);
+    List<StockMovement> findByProductNameContainingIgnoreCase(String name);
 }

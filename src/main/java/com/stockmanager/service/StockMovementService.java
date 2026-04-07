@@ -21,6 +21,10 @@ public class StockMovementService {
         return stockMovementRepository.findAll();
     }
 
+    public List<StockMovement> searchByProductName(String name) {
+        return stockMovementRepository.findByProductNameContainingIgnoreCase(name);
+    }
+
     public List<StockMovement> findByProduct(Long productId) {
         return stockMovementRepository.findByProductId(productId);
     }

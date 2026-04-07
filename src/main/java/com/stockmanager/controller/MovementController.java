@@ -112,7 +112,17 @@ public class MovementController {
     }
 
     @FXML
-    private void handleSearch() { }
+    private void handleSearch() {
+        String query = searchField.getText();
+        if (query == null || query.isEmpty()) {
+            refreshTable();
+        } else {
+            ObservableList<StockMovement> results = FXCollections.observableArrayList(
+                    stockMovementService.searchByProductName(query)
+            );
+            stockMovementTable.setItems(results);
+        }
+    }
 
     public void initialize() {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
