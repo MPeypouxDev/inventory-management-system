@@ -215,7 +215,17 @@ public class ProductController {
     }
 
     @FXML
-    private void handleSearch() { }
+    private void handleSearch() {
+        String query = searchField.getText();
+        if (query == null || query.isEmpty()) {
+            refreshTable();
+        } else {
+            ObservableList<Product> results = FXCollections.observableArrayList(
+                    productService.searchByName(query)
+            );
+            productTable.setItems(results);
+        }
+    }
 
     public void initialize() {
 

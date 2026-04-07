@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
-import org.springframework.beans.PropertyEditorRegistrar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -170,7 +169,17 @@ public class SupplierController {
     }
 
     @FXML
-    private void handleSearch() { }
+    private void handleSearch() {
+        String query = searchField.getText();
+        if (query == null || query.isEmpty()) {
+            refreshTable();
+        } else {
+            ObservableList<Supplier> results = FXCollections.observableArrayList(
+                    supplierService.searchByName(query)
+            );
+            supplierTable.setItems(results);
+        }
+    }
 
     public void initialize() {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));

@@ -23,6 +23,10 @@ public class ProductService {
         return productRepository.findById(id);
     }
 
+    public List<Product> searchByName(String name) {
+        return productRepository.findByNameContainingIgnoreCase(name);
+    }
+
     public List<Product> findLowStockProducts() {
         return productRepository.findAll()
                 .stream()
