@@ -1,5 +1,6 @@
 package com.stockmanager.controller;
 
+import com.stockmanager.config.SessionManager;
 import com.stockmanager.service.AuthService;
 import com.stockmanager.model.User;
 
@@ -21,6 +22,9 @@ import java.io.IOException;
 
 @Component
 public class LoginController {
+
+    @Autowired
+    private SessionManager sessionManager;
 
     @Autowired
     private AuthService authService;
@@ -45,6 +49,7 @@ public class LoginController {
         Optional<User> result = authService.login(username, password);
 
         if (result.isPresent()) {
+            sessionManager.setCurrentUser(result.get());
             Stage stage = (Stage) usernameField.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MainView.fxml"));
             loader.setControllerFactory(springContext::getBean);

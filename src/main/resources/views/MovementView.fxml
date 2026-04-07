@@ -27,6 +27,7 @@
             <TableColumn fx:id="quantityColumn" text="Quantité" prefWidth="50"/>
             <TableColumn fx:id="dateColumn" text="Date" prefWidth="100"/>
             <TableColumn fx:id="reasonColumn" text="Raison" prefWidth="200"/>
+            <TableColumn fx:id="userColumn" text="Utilisateur" prefWidth="120"/>
         </columns>
     </TableView>
 </VBox>

@@ -53,6 +53,9 @@ public class MovementController {
     private TableColumn<StockMovement, String> reasonColumn;
 
     @FXML
+    private TableColumn<StockMovement, String> userColumn;
+
+    @FXML
     private void handleAdd() {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Ajouter un mouvement");
@@ -141,6 +144,12 @@ public class MovementController {
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
         reasonColumn.setCellValueFactory(new PropertyValueFactory<>("reason"));
+        userColumn.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(
+                        cellData.getValue().getUser() != null ?
+                                cellData.getValue().getUser().getUsername() : ""
+                )
+        );
 
         ObservableList<StockMovement> stockMovements = FXCollections.observableArrayList(stockMovementService.findAll());
         stockMovementTable.setItems(stockMovements);

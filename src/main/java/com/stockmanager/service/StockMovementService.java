@@ -1,5 +1,6 @@
 package com.stockmanager.service;
 
+import com.stockmanager.config.SessionManager;
 import com.stockmanager.model.Product;
 import com.stockmanager.model.StockMovement;
 import com.stockmanager.repository.ProductRepository;
@@ -16,6 +17,8 @@ public class StockMovementService {
 
     private final StockMovementRepository stockMovementRepository;
     private final ProductRepository productRepository;
+
+    private final SessionManager sessionManager;
 
     public List<StockMovement> findAll() {
         return stockMovementRepository.findAll();
@@ -46,6 +49,7 @@ public class StockMovementService {
         }
 
         movement.setDate(LocalDateTime.now());
+        movement.setUser(sessionManager.getCurrentUser());
         productRepository.save(product);
         return stockMovementRepository.save(movement);
     }
