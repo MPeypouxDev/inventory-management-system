@@ -96,6 +96,19 @@ public class MovementController {
 
         dialog.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
+
+                if (productCombo.getValue() == null ||
+                        typeCombo.getValue() == null ||
+                        quantityField.getText().isEmpty()) {
+
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Champs manquants");
+                    alert.setContentText("Veuillez remplir tous les champs obligatoires : Produit, Type et Quantité.");
+                    alert.showAndWait();
+                    return;
+                }
+
+
                 StockMovement stockMovement = new StockMovement();
                 stockMovement.setProduct(productCombo.getValue());
                 stockMovement.setType(typeCombo.getValue());

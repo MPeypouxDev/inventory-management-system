@@ -78,6 +78,18 @@ public class SupplierController {
 
         dialog.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
+
+                if (nameField.getText().isEmpty() ||
+                        contactField.getText().isEmpty() ||
+                        mailField.getText().isEmpty()) {
+
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Champs manquants");
+                    alert.setContentText("Veuillez remplir tous les champs obligatoires : Nom, Contact, Email.");
+                    alert.showAndWait();
+                    return;
+                }
+
                 Supplier supplier = new Supplier();
                 supplier.setName(nameField.getText());
                 supplier.setContact(contactField.getText());
@@ -135,6 +147,18 @@ public class SupplierController {
 
             dialog.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
+
+                    if (nameField.getText().isEmpty() ||
+                            contactField.getText().isEmpty() ||
+                            mailField.getText().isEmpty()) {
+
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Champs manquants");
+                        alert.setContentText("Veuillez remplir tous les champs obligatoires : Nom, Contact, Email.");
+                        alert.showAndWait();
+                        return;
+                    }
+
                     selected.setName(nameField.getText());
                     selected.setContact(contactField.getText());
                     selected.setTelephone(phoneField.getText());

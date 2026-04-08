@@ -104,6 +104,21 @@ public class ProductController {
 
         dialog.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
+
+                if (nameField.getText().isEmpty() ||
+                        stockField.getText().isEmpty() ||
+                        salePriceField.getText().isEmpty() ||
+                        thresholdField.getText().isEmpty() ||
+                        categoryCombo.getValue() == null) {
+
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Champs manquants");
+                    alert.setContentText("Veuillez remplir tous les champs obligatoires : Nom, Stock, Prix de vente, Seuil d'alerte et Catégorie.");
+                    alert.showAndWait();
+                    return;
+                }
+
+
                 Product product = new Product();
                 product.setName(nameField.getText());
                 product.setDescription(descriptionField.getText());
@@ -179,6 +194,20 @@ public class ProductController {
 
             dialog.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
+
+                    if (nameField.getText().isEmpty() ||
+                            stockField.getText().isEmpty() ||
+                            salePriceField.getText().isEmpty() ||
+                            thresholdField.getText().isEmpty() ||
+                            categoryCombo.getValue() == null) {
+
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Champs manquants");
+                        alert.setContentText("Veuillez remplir tous les champs obligatoires : Nom, Stock, Prix de vente, Seuil d'alerte et Catégorie.");
+                        alert.showAndWait();
+                        return;
+                    }
+
                     selected.setName(nameField.getText());
                     selected.setDescription(descriptionField.getText());
                     selected.setCategory(categoryCombo.getValue());
