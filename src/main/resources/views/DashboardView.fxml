@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+
+<VBox
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.stockmanager.controller.DashboardController"
+            style="-fx-background-color: #f5f6fa; -fx-padding: 25px;" spacing="20">
+
+    <!-- Titre -->
+    <Label text="Tableau de bord"
+           style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+
+    <!-- Dashboard -->
+    <HBox spacing="15">
+        <VBox style="-fx-background-color: white; -fx-padding: 20px; -fx-pref-width: 180px; -fx-effect: dropshadow(gaussian, #cccccc, 5, 0, 0, 2);" alignment="CENTER" spacing="5">
+            <Label text="Produits" style="-fx-font-size: 14px; -fx-text-fill: #7f8c8d;"/>
+            <Label fx:id="productCountLabel" text="0" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #3498db;"/>
+        </VBox>
+        <VBox style="-fx-background-color: white; -fx-padding: 20px; -fx-pref-width: 180px; -fx-effect: dropshadow(gaussian, #cccccc, 5, 0, 0, 2);" alignment="CENTER" spacing="5">
+            <Label text="Fournisseurs" style="-fx-font-size: 14px; -fx-text-fill: #7f8c8d;"/>
+            <Label fx:id="supplierCountLabel" text="0" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #3498db;"/>
+        </VBox>
+        <VBox style="-fx-background-color: white; -fx-padding: 20px; -fx-pref-width: 180px; -fx-effect: dropshadow(gaussian, #cccccc, 5, 0, 0, 2);" alignment="CENTER" spacing="5">
+            <Label text="Alertes stock" style="-fx-font-size: 14px; -fx-text-fill: #7f8c8d;"/>
+            <Label fx:id="alertCountLabel" text="0" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #3498db;"/>
+        </VBox>
+        <VBox style="-fx-background-color: white; -fx-padding: 20px; -fx-pref-width: 180px; -fx-effect: dropshadow(gaussian, #cccccc, 5, 0, 0, 2);" alignment="CENTER" spacing="5">
+            <Label text="Mouvements" style="-fx-font-size: 14px; -fx-text-fill: #7f8c8d;"/>
+            <Label fx:id="movementCountLabel" text="0" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #3498db;"/>
+        </VBox>
+    </HBox>
+
+    <!-- Zone centrale -->
+
+            <!-- Derniers mouvements -->
+            <Label text="Derniers mouvements"
+                   style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+            <TableView fx:id="recentMovementsTable" prefHeight="200">
+                <columns>
+                    <TableColumn fx:id="recentProductColumn" text="Produit" prefWidth="200"/>
+                    <TableColumn fx:id="recentTypeColumn" text="Type" prefWidth="100"/>
+                    <TableColumn fx:id="recentQuantityColumn" text="Quantité" prefWidth="80"/>
+                    <TableColumn fx:id="recentDateColumn" text="Date" prefWidth="150"/>
+                </columns>
+            </TableView>
+
+</VBox>
