@@ -21,6 +21,10 @@ public class CategoryService {
         return categoryRepository.findById(id);
     }
 
+    public List<Category> searchByName(String name) {
+        return categoryRepository.findByNameContainingIgnoreCase(name);
+    }
+
     public Category save(Category category) {
         return categoryRepository.save(category);
     }

@@ -32,6 +32,8 @@
                     prefWidth="180" style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-font-size: 14px; -fx-cursor: hand; -fx-padding: 10px;"/>
             <Button text="Mouvements" onAction="#showMovements"
                     prefWidth="180" style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-font-size: 14px; -fx-cursor: hand; -fx-padding: 10px;"/>
+            <Button text="Catégorie" onAction="#showCategories"
+                    prefWidth="180" style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-font-size: 14px; -fx-cursor: hand; -fx-padding: 10px;"/>
             <Button text="Déconnexion" onAction="#handleLogout"
                     prefWidth="180" style="-fx-background-color: transparent; -fx-text-fill: #e74c3c; -fx-font-size: 14px; -fx-cursor: hand; -fx-padding: 10px;"/>
         </VBox>

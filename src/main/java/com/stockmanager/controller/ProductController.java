@@ -112,7 +112,7 @@ public class ProductController {
                         categoryCombo.getValue() == null) {
 
                     Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Champs manquants");
+                    alert.setTitle("Champs requis manquants");
                     alert.setContentText("Veuillez remplir tous les champs obligatoires : Nom, Stock, Prix de vente, Seuil d'alerte et Catégorie.");
                     alert.showAndWait();
                     return;
@@ -202,7 +202,7 @@ public class ProductController {
                             categoryCombo.getValue() == null) {
 
                         Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle("Champs manquants");
+                        alert.setTitle("Champs requis manquants");
                         alert.setContentText("Veuillez remplir tous les champs obligatoires : Nom, Stock, Prix de vente, Seuil d'alerte et Catégorie.");
                         alert.showAndWait();
                         return;

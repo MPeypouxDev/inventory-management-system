@@ -44,6 +44,9 @@ public class MainController {
     private void showDashboard() { loadView("/views/DashboardView.fxml"); }
 
     @FXML
+    private void showCategories() { loadView("/views/CategoryView.fxml"); }
+
+    @FXML
     private void handleLogout() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/LoginView.fxml"));

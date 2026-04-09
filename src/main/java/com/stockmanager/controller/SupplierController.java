@@ -84,7 +84,7 @@ public class SupplierController {
                         mailField.getText().isEmpty()) {
 
                     Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Champs manquants");
+                    alert.setTitle("Champs requis manquants");
                     alert.setContentText("Veuillez remplir tous les champs obligatoires : Nom, Contact, Email.");
                     alert.showAndWait();
                     return;
@@ -153,7 +153,7 @@ public class SupplierController {
                             mailField.getText().isEmpty()) {
 
                         Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle("Champs manquants");
+                        alert.setTitle("Champs requis manquants");
                         alert.setContentText("Veuillez remplir tous les champs obligatoires : Nom, Contact, Email.");
                         alert.showAndWait();
                         return;
