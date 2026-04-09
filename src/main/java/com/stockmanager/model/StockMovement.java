@@ -30,6 +30,17 @@ public class StockMovement {
     private User user;
 
     public enum MovementType {
-        ENTRY, OUTGOING
+        ENTRY("Entrée"),
+        OUTGOING("Sortie");
+
+        private final String label;
+
+        MovementType(String label) {
+            this.label = label;
+        }
+
+        public String getLabel() {
+            return label;
+        }
     }
 }

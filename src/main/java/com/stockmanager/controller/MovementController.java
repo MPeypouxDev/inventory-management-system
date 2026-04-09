@@ -72,6 +72,17 @@ public class MovementController {
         ComboBox<Product> productCombo = new ComboBox<>();
         ComboBox<StockMovement.MovementType> typeCombo = new ComboBox<>();
         typeCombo.getItems().addAll(StockMovement.MovementType.values());
+        typeCombo.setConverter(new javafx.util.StringConverter<StockMovement.MovementType>() {
+            @Override
+            public String toString(StockMovement.MovementType type) {
+                return type != null ? type.getLabel() : "";
+            }
+
+            @Override
+            public StockMovement.MovementType fromString(String string) {
+                return null;
+            }
+        });
         productCombo.getItems().addAll(productService.findAll());
 
         productCombo.setConverter(new javafx.util.StringConverter<Product>() {
@@ -151,7 +162,7 @@ public class MovementController {
         typeColumn.setCellValueFactory(stockMovementStringCellDataFeatures ->
                 new javafx.beans.property.SimpleStringProperty(
                         stockMovementStringCellDataFeatures.getValue().getType() != null ?
-                                stockMovementStringCellDataFeatures.getValue().getType().name() : ""
+                                stockMovementStringCellDataFeatures.getValue().getType().getLabel() : ""
                 )
                 );
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));

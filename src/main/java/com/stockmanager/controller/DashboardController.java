@@ -73,7 +73,7 @@ public class DashboardController {
         recentTypeColumn.setCellValueFactory(cellData ->
                 new javafx.beans.property.SimpleStringProperty(
                         cellData.getValue().getType() != null ?
-                                cellData.getValue().getType().name() : ""
+                                cellData.getValue().getType().getLabel() : ""
                 )
         );
 

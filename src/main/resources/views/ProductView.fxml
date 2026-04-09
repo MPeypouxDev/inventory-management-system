@@ -34,6 +34,8 @@
                 style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8px 15px; -fx-cursor: hand;"/>
         <Button text="Supprimer" onAction="#handleDelete"
                 style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8px 15px; -fx-cursor: hand;"/>
+        <Button text="Historique" onAction="#handleHistory"
+                style="-fx-background-color: #9b59b6; -fx-text-fill: white; -fx-font-weght: bold; -fx-padding: 8px 15px; -fx-cursor: hand;"/>
     </HBox>
 
 </VBox>
