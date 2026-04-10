@@ -1,5 +1,6 @@
 package com.stockmanager.controller;
 
+import com.stockmanager.config.GlobalExceptionHandler;
 import com.stockmanager.service.CategoryService;
 import com.stockmanager.model.Category;
 import javafx.fxml.FXML;
@@ -64,21 +65,26 @@ public class CategoryController {
 
         dialog.showAndWait().ifPresent( response -> {
             if (response == ButtonType.OK) {
-                if (nameField.getText().isEmpty() ||
-                    descriptionField.getText().isEmpty()) {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Champs requis manquants");
-                    alert.setContentText("Veuillez remplir tous les champs obligatoires : Nom, Description.");
-                    alert.showAndWait();
-                    return;
+
+                try {
+                    if (nameField.getText().isEmpty() ||
+                            descriptionField.getText().isEmpty()) {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Champs requis manquants");
+                        alert.setContentText("Veuillez remplir tous les champs obligatoires : Nom, Description.");
+                        alert.showAndWait();
+                        return;
+                    }
+
+                    Category category = new Category();
+                    category.setName(nameField.getText());
+                    category.setDescription(descriptionField.getText());
+
+                    categoryService.save(category);
+                    refreshTable();
+                } catch (Exception e) {
+                    GlobalExceptionHandler.handle(e);
                 }
-
-                Category category = new Category();
-                category.setName(nameField.getText());
-                category.setDescription(descriptionField.getText());
-
-                categoryService.save(category);
-                refreshTable();
             }
         });
     }
@@ -118,20 +124,25 @@ public class CategoryController {
 
             dialog.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
-                    if (nameField.getText().isEmpty() ||
-                        descriptionField.getText().isEmpty()) {
-                        Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle("Champs requis manquants");
-                        alert.setContentText("Veuillez remplir tous les champs obligatoires: Nom, Description");
-                        alert.showAndWait();
-                        return;
+
+                    try {
+                        if (nameField.getText().isEmpty() ||
+                                descriptionField.getText().isEmpty()) {
+                            Alert alert = new Alert(Alert.AlertType.WARNING);
+                            alert.setTitle("Champs requis manquants");
+                            alert.setContentText("Veuillez remplir tous les champs obligatoires: Nom, Description");
+                            alert.showAndWait();
+                            return;
+                        }
+
+                        selected.setName(nameField.getText());
+                        selected.setDescription(descriptionField.getText());
+
+                        categoryService.save(selected);
+                        refreshTable();
+                    } catch (Exception e) {
+                        GlobalExceptionHandler.handle(e);
                     }
-
-                    selected.setName(nameField.getText());
-                    selected.setDescription(descriptionField.getText());
-
-                    categoryService.save(selected);
-                    refreshTable();
                 }
             });
         }
@@ -150,8 +161,13 @@ public class CategoryController {
             confirm.setContentText("Voulez-vous vraiment supprimer " + selected.getName());
             confirm.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
-                    categoryService.delete(selected.getId());
-                    refreshTable();
+
+                    try {
+                        categoryService.delete(selected.getId());
+                        refreshTable();
+                    } catch (Exception e) {
+                        GlobalExceptionHandler.handle(e);
+                    }
                 }
             });
         }

@@ -1,5 +1,6 @@
 package com.stockmanager.controller;
 
+import com.stockmanager.config.GlobalExceptionHandler;
 import com.stockmanager.service.SupplierService;
 import com.stockmanager.model.Supplier;
 import javafx.collections.FXCollections;
@@ -79,26 +80,30 @@ public class SupplierController {
         dialog.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
 
-                if (nameField.getText().isEmpty() ||
-                        contactField.getText().isEmpty() ||
-                        mailField.getText().isEmpty()) {
+                try {
+                    if (nameField.getText().isEmpty() ||
+                            contactField.getText().isEmpty() ||
+                            mailField.getText().isEmpty()) {
 
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Champs requis manquants");
-                    alert.setContentText("Veuillez remplir tous les champs obligatoires : Nom, Contact, Email.");
-                    alert.showAndWait();
-                    return;
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Champs requis manquants");
+                        alert.setContentText("Veuillez remplir tous les champs obligatoires : Nom, Contact, Email.");
+                        alert.showAndWait();
+                        return;
+                    }
+
+                    Supplier supplier = new Supplier();
+                    supplier.setName(nameField.getText());
+                    supplier.setContact(contactField.getText());
+                    supplier.setTelephone(phoneField.getText());
+                    supplier.setEmail(mailField.getText());
+                    supplier.setAddress(addressField.getText());
+
+                    supplierService.save(supplier);
+                    refreshTable();
+                } catch (Exception e) {
+                    GlobalExceptionHandler.handle(e);
                 }
-
-                Supplier supplier = new Supplier();
-                supplier.setName(nameField.getText());
-                supplier.setContact(contactField.getText());
-                supplier.setTelephone(phoneField.getText());
-                supplier.setEmail(mailField.getText());
-                supplier.setAddress(addressField.getText());
-
-                supplierService.save(supplier);
-                refreshTable();
             }
         });
     }
@@ -148,25 +153,29 @@ public class SupplierController {
             dialog.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
 
-                    if (nameField.getText().isEmpty() ||
-                            contactField.getText().isEmpty() ||
-                            mailField.getText().isEmpty()) {
+                    try {
+                        if (nameField.getText().isEmpty() ||
+                                contactField.getText().isEmpty() ||
+                                mailField.getText().isEmpty()) {
 
-                        Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle("Champs requis manquants");
-                        alert.setContentText("Veuillez remplir tous les champs obligatoires : Nom, Contact, Email.");
-                        alert.showAndWait();
-                        return;
+                            Alert alert = new Alert(Alert.AlertType.WARNING);
+                            alert.setTitle("Champs requis manquants");
+                            alert.setContentText("Veuillez remplir tous les champs obligatoires : Nom, Contact, Email.");
+                            alert.showAndWait();
+                            return;
+                        }
+
+                        selected.setName(nameField.getText());
+                        selected.setContact(contactField.getText());
+                        selected.setTelephone(phoneField.getText());
+                        selected.setEmail(mailField.getText());
+                        selected.setAddress(addressField.getText());
+
+                        supplierService.save(selected);
+                        refreshTable();
+                    } catch (Exception e) {
+                        GlobalExceptionHandler.handle(e);
                     }
-
-                    selected.setName(nameField.getText());
-                    selected.setContact(contactField.getText());
-                    selected.setTelephone(phoneField.getText());
-                    selected.setEmail(mailField.getText());
-                    selected.setAddress(addressField.getText());
-
-                    supplierService.save(selected);
-                    refreshTable();
                 }
             });
         }
@@ -185,8 +194,13 @@ public class SupplierController {
             confirm.setContentText("Voulez-vous vraiment supprimer " + selected.getName() + " ?");
             confirm.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
-                    supplierService.delete(selected.getId());
-                    refreshTable();
+
+                    try {
+                        supplierService.delete(selected.getId());
+                        refreshTable();
+                    } catch (Exception e) {
+                        GlobalExceptionHandler.handle(e);
+                    }
                 }
             });
         }

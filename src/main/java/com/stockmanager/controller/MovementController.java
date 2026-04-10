@@ -1,5 +1,6 @@
 package com.stockmanager.controller;
 
+import com.stockmanager.config.GlobalExceptionHandler;
 import com.stockmanager.model.StockMovement;
 import com.stockmanager.model.Product;
 import com.stockmanager.service.ProductService;
@@ -118,27 +119,31 @@ public class MovementController {
         dialog.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
 
-                if (productCombo.getValue() == null ||
-                        typeCombo.getValue() == null ||
-                        quantityField.getText().isEmpty()) {
+                try {
+                    if (productCombo.getValue() == null ||
+                            typeCombo.getValue() == null ||
+                            quantityField.getText().isEmpty()) {
 
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Champs requis manquants");
-                    alert.setContentText("Veuillez remplir tous les champs obligatoires : Produit, Type et Quantité.");
-                    alert.showAndWait();
-                    return;
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Champs requis manquants");
+                        alert.setContentText("Veuillez remplir tous les champs obligatoires : Produit, Type et Quantité.");
+                        alert.showAndWait();
+                        return;
+                    }
+
+
+                    StockMovement stockMovement = new StockMovement();
+                    stockMovement.setProduct(productCombo.getValue());
+                    stockMovement.setType(typeCombo.getValue());
+                    stockMovement.setQuantity(Integer.parseInt(quantityField.getText()));
+                    stockMovement.setDate(LocalDateTime.now());
+                    stockMovement.setReason(reasonField.getText());
+
+                    stockMovementService.addMovement(stockMovement);
+                    refreshTable();
+                } catch (Exception e) {
+                    GlobalExceptionHandler.handle(e);
                 }
-
-
-                StockMovement stockMovement = new StockMovement();
-                stockMovement.setProduct(productCombo.getValue());
-                stockMovement.setType(typeCombo.getValue());
-                stockMovement.setQuantity(Integer.parseInt(quantityField.getText()));
-                stockMovement.setDate(LocalDateTime.now());
-                stockMovement.setReason(reasonField.getText());
-
-                stockMovementService.addMovement(stockMovement);
-                refreshTable();
             }
         });
     }

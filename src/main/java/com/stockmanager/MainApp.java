@@ -1,5 +1,6 @@
 package com.stockmanager;
 
+import com.stockmanager.config.GlobalExceptionHandler;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -15,6 +16,9 @@ public class MainApp extends Application{
     @Override
     public void init() {
         springContext = SpringApplication.run(StockManagerApplication.class);
+        Thread.setDefaultUncaughtExceptionHandler(
+                springContext.getBean(GlobalExceptionHandler.class)
+        );
     }
 
     @Override

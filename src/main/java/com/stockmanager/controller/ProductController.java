@@ -1,5 +1,6 @@
 package com.stockmanager.controller;
 
+import com.stockmanager.config.GlobalExceptionHandler;
 import com.stockmanager.model.StockMovement;
 import com.stockmanager.service.CategoryService;
 import com.stockmanager.service.ExportService;
@@ -118,31 +119,35 @@ public class ProductController {
         dialog.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
 
-                if (nameField.getText().isEmpty() ||
-                        stockField.getText().isEmpty() ||
-                        salePriceField.getText().isEmpty() ||
-                        thresholdField.getText().isEmpty() ||
-                        categoryCombo.getValue() == null) {
+                try {
+                    if (nameField.getText().isEmpty() ||
+                            stockField.getText().isEmpty() ||
+                            salePriceField.getText().isEmpty() ||
+                            thresholdField.getText().isEmpty() ||
+                            categoryCombo.getValue() == null) {
 
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Champs requis manquants");
-                    alert.setContentText("Veuillez remplir tous les champs obligatoires : Nom, Stock, Prix de vente, Seuil d'alerte et Catégorie.");
-                    alert.showAndWait();
-                    return;
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Champs requis manquants");
+                        alert.setContentText("Veuillez remplir tous les champs obligatoires : Nom, Stock, Prix de vente, Seuil d'alerte et Catégorie.");
+                        alert.showAndWait();
+                        return;
+                    }
+
+
+                    Product product = new Product();
+                    product.setName(nameField.getText());
+                    product.setDescription(descriptionField.getText());
+                    product.setCategory(categoryCombo.getValue());
+                    product.setPurchasePrice(Double.parseDouble(purchasePriceField.getText()));
+                    product.setSalePrice(Double.parseDouble(salePriceField.getText()));
+                    product.setStockQuantity(Integer.parseInt(stockField.getText()));
+                    product.setAlertThreshold(Integer.parseInt(thresholdField.getText()));
+
+                    productService.save(product);
+                    refreshTable();
+                } catch (Exception e) {
+                    GlobalExceptionHandler.handle(e);
                 }
-
-
-                Product product = new Product();
-                product.setName(nameField.getText());
-                product.setDescription(descriptionField.getText());
-                product.setCategory(categoryCombo.getValue());
-                product.setPurchasePrice(Double.parseDouble(purchasePriceField.getText()));
-                product.setSalePrice(Double.parseDouble(salePriceField.getText()));
-                product.setStockQuantity(Integer.parseInt(stockField.getText()));
-                product.setAlertThreshold(Integer.parseInt(thresholdField.getText()));
-
-                productService.save(product);
-                refreshTable();
             }
         });
     }
@@ -208,29 +213,33 @@ public class ProductController {
             dialog.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
 
-                    if (nameField.getText().isEmpty() ||
-                            stockField.getText().isEmpty() ||
-                            salePriceField.getText().isEmpty() ||
-                            thresholdField.getText().isEmpty() ||
-                            categoryCombo.getValue() == null) {
+                    try {
+                        if (nameField.getText().isEmpty() ||
+                                stockField.getText().isEmpty() ||
+                                salePriceField.getText().isEmpty() ||
+                                thresholdField.getText().isEmpty() ||
+                                categoryCombo.getValue() == null) {
 
-                        Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle("Champs requis manquants");
-                        alert.setContentText("Veuillez remplir tous les champs obligatoires : Nom, Stock, Prix de vente, Seuil d'alerte et Catégorie.");
-                        alert.showAndWait();
-                        return;
+                            Alert alert = new Alert(Alert.AlertType.WARNING);
+                            alert.setTitle("Champs requis manquants");
+                            alert.setContentText("Veuillez remplir tous les champs obligatoires : Nom, Stock, Prix de vente, Seuil d'alerte et Catégorie.");
+                            alert.showAndWait();
+                            return;
+                        }
+
+                        selected.setName(nameField.getText());
+                        selected.setDescription(descriptionField.getText());
+                        selected.setCategory(categoryCombo.getValue());
+                        selected.setPurchasePrice(Double.parseDouble(purchasePriceField.getText()));
+                        selected.setSalePrice(Double.parseDouble(salePriceField.getText()));
+                        selected.setStockQuantity(Integer.parseInt(stockField.getText()));
+                        selected.setAlertThreshold(Integer.parseInt(thresholdField.getText()));
+
+                        productService.save(selected);
+                        refreshTable();
+                    } catch (Exception e) {
+                        GlobalExceptionHandler.handle(e);
                     }
-
-                    selected.setName(nameField.getText());
-                    selected.setDescription(descriptionField.getText());
-                    selected.setCategory(categoryCombo.getValue());
-                    selected.setPurchasePrice(Double.parseDouble(purchasePriceField.getText()));
-                    selected.setSalePrice(Double.parseDouble(salePriceField.getText()));
-                    selected.setStockQuantity(Integer.parseInt(stockField.getText()));
-                    selected.setAlertThreshold(Integer.parseInt(thresholdField.getText()));
-
-                    productService.save(selected);
-                    refreshTable();
                 }
             });
         }
@@ -249,8 +258,13 @@ public class ProductController {
             confirm.setContentText("Voulez-vous vraiment supprimer " + selected.getName() + " ?");
             confirm.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
-                    productService.delete(selected.getId());
-                    refreshTable();
+
+                    try {
+                        productService.delete(selected.getId());
+                        refreshTable();
+                    } catch (Exception e) {
+                        GlobalExceptionHandler.handle(e);
+                    }
                 }
             });
         }
