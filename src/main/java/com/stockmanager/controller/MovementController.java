@@ -6,6 +6,7 @@ import com.stockmanager.model.Product;
 import com.stockmanager.service.ProductService;
 import com.stockmanager.service.StockMovementService;
 import com.stockmanager.service.ExportService;
+import com.stockmanager.util.DateUtils;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -58,7 +59,7 @@ public class MovementController {
     private TableColumn<StockMovement, Integer> quantityColumn;
 
     @FXML
-    private TableColumn<StockMovement, LocalDateTime> dateColumn;
+    private TableColumn<StockMovement, String> dateColumn;
 
     @FXML
     private TableColumn<StockMovement, String> reasonColumn;
@@ -209,7 +210,11 @@ public class MovementController {
                 )
                 );
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+        dateColumn.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(
+                        DateUtils.format(cellData.getValue().getDate())
+                )
+        );
         reasonColumn.setCellValueFactory(new PropertyValueFactory<>("reason"));
         userColumn.setCellValueFactory(cellData ->
                 new javafx.beans.property.SimpleStringProperty(

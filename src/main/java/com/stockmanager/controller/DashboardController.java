@@ -6,6 +6,7 @@ import com.stockmanager.service.ProductService;
 import com.stockmanager.service.StockMovementService;
 import com.stockmanager.service.SupplierService;
 
+import com.stockmanager.util.DateUtils;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
@@ -96,8 +97,7 @@ public class DashboardController {
 
         recentDateColumn.setCellValueFactory(cellData ->
                 new javafx.beans.property.SimpleStringProperty(
-                        cellData.getValue().getDate() != null ?
-                                cellData.getValue().getDate().toString() : ""
+                        DateUtils.format(cellData.getValue().getDate())
                 )
         );
 

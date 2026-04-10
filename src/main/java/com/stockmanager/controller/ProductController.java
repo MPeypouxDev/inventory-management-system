@@ -8,6 +8,8 @@ import com.stockmanager.service.ProductService;
 import com.stockmanager.model.Product;
 import com.stockmanager.model.Category;
 import com.stockmanager.service.StockMovementService;
+import com.stockmanager.util.DateUtils;
+
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -316,8 +318,7 @@ public class ProductController {
             TableColumn<StockMovement, String> dateCol = new TableColumn<>("Date");
             dateCol.setCellValueFactory(cellData ->
                     new javafx.beans.property.SimpleStringProperty(
-                            cellData.getValue().getDate() != null ?
-                                    cellData.getValue().getDate().toString() : ""
+                            DateUtils.format(cellData.getValue().getDate())
                     )
             );
 
