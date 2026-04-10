@@ -5,10 +5,15 @@ import com.stockmanager.model.StockMovement;
 import com.stockmanager.service.ProductService;
 import com.stockmanager.service.StockMovementService;
 import com.stockmanager.service.SupplierService;
+
 import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +30,12 @@ public class DashboardController {
 
     @Autowired
     private StockMovementService stockMovementService;
+
+    @FXML
+    private BarChart<String, Number> stockBarChart;
+
+    @FXML
+    private PieChart movementPieChart;
 
     @FXML
     private Label productCountLabel;
@@ -92,6 +103,29 @@ public class DashboardController {
 
         recentMovementsTable.setItems(
                 javafx.collections.FXCollections.observableArrayList(movements)
+        );
+
+        // Graphique stock par produit
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Stock actuel");
+        for (Product product : productService.findAll()) {
+            series.getData().add(
+                    new XYChart.Data<>(product.getName(), product.getStockQuantity())
+            );
+        }
+        stockBarChart.getData().add(series);
+
+        // Graphique réparition mouvements
+        long entries = stockMovementService.findAll().stream()
+                .filter(m -> m.getType() == StockMovement.MovementType.ENTRY)
+                .count();
+        long outgoings = stockMovementService.findAll().stream()
+                .filter(m -> m.getType() == StockMovement.MovementType.OUTGOING)
+                .count();
+
+        movementPieChart.getData().addAll(
+                new PieChart.Data("Entrées", entries),
+                new PieChart.Data("Sorties", outgoings)
         );
     }
 }
