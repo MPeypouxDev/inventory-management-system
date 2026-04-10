@@ -2,11 +2,13 @@ package com.stockmanager.controller;
 
 import com.stockmanager.model.StockMovement;
 import com.stockmanager.service.CategoryService;
+import com.stockmanager.service.ExportService;
 import com.stockmanager.service.ProductService;
 import com.stockmanager.model.Product;
 import com.stockmanager.model.Category;
 import com.stockmanager.service.StockMovementService;
 import javafx.fxml.FXML;
+import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -19,6 +21,9 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
+import java.io.File;
+import java.io.IOException;
 
 
 @Component
@@ -35,6 +40,9 @@ public class ProductController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private ExportService exportService;
 
     @FXML
     TableView<Product> productTable;
@@ -314,6 +322,34 @@ public class ProductController {
 
             dialog.getDialogPane().setContent(table);
             dialog.showAndWait();
+        }
+    }
+
+    @FXML
+    private void handleExportExcel() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Enregistrer l'export Excel");
+        fileChooser.setInitialFileName("produits.xlsx");
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Fichier Excel", "*.xlsx")
+        );
+
+        Stage stage = (Stage) productTable.getScene().getWindow();
+        File file = fileChooser.showSaveDialog(stage);
+
+        if (file != null) {
+            try {
+                exportService.exportProductsToExcel(file.getAbsolutePath());
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Export réussi");
+                alert.setContentText("Le fichier a été exporté avec succès !");
+                alert.showAndWait();
+            } catch (IOException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur d'export");
+                alert.setContentText("Erreur lors de 'lexport :" + e.getMessage());
+                alert.showAndWait();
+            }
         }
     }
 

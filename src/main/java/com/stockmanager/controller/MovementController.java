@@ -4,12 +4,19 @@ import com.stockmanager.model.StockMovement;
 import com.stockmanager.model.Product;
 import com.stockmanager.service.ProductService;
 import com.stockmanager.service.StockMovementService;
+import com.stockmanager.service.ExportService;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import java.io.File;
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -24,6 +31,9 @@ public class MovementController {
 
     @Autowired
     private StockMovementService stockMovementService;
+
+    @Autowired
+    private ExportService exportService;
 
     @Autowired
     private ApplicationContext springContext;
@@ -148,6 +158,34 @@ public class MovementController {
                     stockMovementService.searchByProductName(query)
             );
             stockMovementTable.setItems(results);
+        }
+    }
+
+    @FXML
+    private void handleExportPdf() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Enregistrer l'export PDF");
+        fileChooser.setInitialFileName("mouvements.pdf");
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Fichier PDF", "*.pdf")
+        );
+
+        Stage stage = (Stage) stockMovementTable.getScene().getWindow();
+        File file = fileChooser.showSaveDialog(stage);
+
+        if (file != null) {
+            try {
+                exportService.exportMovementsToPdf(file.getAbsolutePath());
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Export réussi");
+                alert.setContentText("Le fichier a été exporté avec succès !");
+                alert.showAndWait();
+            } catch (IOException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur d'export");
+                alert.setContentText("Erreur lors de l'export :" + e.getMessage());
+                alert.showAndWait();
+            }
         }
     }
 
