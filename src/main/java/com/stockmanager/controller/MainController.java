@@ -2,6 +2,7 @@ package com.stockmanager.controller;
 
 import com.stockmanager.service.ProductService;
 import com.stockmanager.model.Product;
+
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -9,6 +10,8 @@ import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.VBox;
+
+
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -66,9 +69,25 @@ public class MainController {
             Parent root = loader.load();
             contentArea.getChildren().clear();
             contentArea.getChildren().add(root);
+
+            if (contentArea.getScene() != null) {
+                Stage stage = (Stage) contentArea.getScene().getWindow();
+                stage.setTitle("Gestion de Stock - " + getTitleForView(fxmlPath));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private String getTitleForView(String fxmlPath) {
+        return switch (fxmlPath) {
+            case "/views/ProductView.fxml" -> "Produits";
+            case "/views/SupplierView.fxml" -> "Fournisseurs";
+            case "/views/MovementView.fxml" -> "Mouvements";
+            case "/views/CategoryView.fxml" -> "Catégories";
+            case "/views/DashboardView.fxml" -> "Tableau de bord";
+            default -> "";
+        };
     }
 
     public void initialize() {
