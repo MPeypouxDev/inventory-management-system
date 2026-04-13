@@ -6,28 +6,39 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.StackPane?>
 
-<VBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.stockmanager.controller.LoginController"
-      alignment="CENTER"
-      spacing="15"
-      prefWidth="400"
-      prefHeight="300">
+<StackPane xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.stockmanager.controller.LoginController"
+           style="-fx-background-color: #2c3e50;"
+           prefWidth="500" prefHeight="450">
 
-    <padding>
-        <Insets top="40" right="40" bottom="40" left="40"/>
-    </padding>
+    <VBox alignment="CENTER" spacing="15"
+          style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 40px; -fx-effect: dropshadow(gaussian, #00000044, 15, 0, 0, 5);"
+          maxWidth="380" maxHeight="420">
 
-    <Label text="Gestion de Stock" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+        <Label text="Gestion de Stock"
+               style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+        <Label text="Connectez-vous à votre espace"
+               style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d;"/>
 
-    <Label text="Nom d'utilisateur"/>
-    <TextField fx:id="usernameField" promptText="Entrez votre nom d'utilisateur"/>
+        <VBox spacing="5">
+            <Label text="Nom d'utilisateur" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+            <TextField fx:id="usernameField" promptText="Entrez votre nom d'utilisateur"
+                       style="-fx-padding: 10px; -fx-border-color: #dcdde1; -fx-border-radius: 5;"/>
+        </VBox>
 
-    <Label text="Mot de passe"/>
-    <PasswordField fx:id="passwordField" promptText="Entrez votre mot de passe"/>
+        <VBox spacing="5">
+            <Label text="Mot de passe" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+            <PasswordField fx:id="passwordField" promptText="Entrez votre mot de passe"
+                           style="-fx-padding: 10px; -fx-border-color: #dcdde1; -fx-border-radius: 5;"/>
+        </VBox>
 
-    <Label fx:id="errorLabel" style="-fx-text-fill: red;" text=""/>
+        <Label fx:id="errorLabel" style="-fx-text-fill: #e74c3c; -fx-font-size: 12px;" text=""/>
 
-    <Button text="Se connecter" onAction="#handleLogin" prefWidth="200"/>
+        <Button text="Se connecter" onAction="#handleLogin" prefWidth="250"
+                style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 12px; -fx-background-radius: 5; -fx-cursor: hand; -fx-font-size: 14px;"/>
 
-</VBox>
+    </VBox>
+
+</StackPane>

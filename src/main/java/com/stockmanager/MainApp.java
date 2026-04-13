@@ -29,7 +29,7 @@ public class MainApp extends Application{
         loader.setControllerFactory(springContext::getBean);
 
         Parent root = loader.load();
-        Scene scene = new Scene(root, 400, 300);
+        Scene scene = new Scene(root, 450, 350);
 
         primaryStage.setTitle("Gestion de Stock - Connexion");
         primaryStage.setScene(scene);
