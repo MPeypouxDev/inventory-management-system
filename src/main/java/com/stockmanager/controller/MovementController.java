@@ -8,6 +8,7 @@ import com.stockmanager.service.StockMovementService;
 import com.stockmanager.service.ExportService;
 import com.stockmanager.util.DateUtils;
 
+import com.stockmanager.util.ToastNotification;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -142,6 +143,8 @@ public class MovementController {
 
                     stockMovementService.addMovement(stockMovement);
                     refreshTable();
+                    Stage stage = (Stage) stockMovementTable.getScene().getWindow();
+                    ToastNotification.show(stage, "Mouvement ajouté avec succès !");
                 } catch (Exception e) {
                     GlobalExceptionHandler.handle(e);
                 }
@@ -182,10 +185,7 @@ public class MovementController {
         if (file != null) {
             try {
                 exportService.exportMovementsToPdf(file.getAbsolutePath());
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Export réussi");
-                alert.setContentText("Le fichier a été exporté avec succès !");
-                alert.showAndWait();
+                ToastNotification.show(stage, "Export PDF réussi !");
             } catch (IOException e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Erreur d'export");

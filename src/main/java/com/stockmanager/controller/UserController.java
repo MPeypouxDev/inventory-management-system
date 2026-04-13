@@ -5,6 +5,7 @@ import com.stockmanager.model.User;
 import com.stockmanager.service.AuthService;
 import com.stockmanager.service.UserService;
 
+import com.stockmanager.util.ToastNotification;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,6 +13,7 @@ import javafx.scene.control.*;
 
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -85,6 +87,8 @@ public class UserController {
 
                     userService.save(user);
                     refreshTable();
+                    Stage stage = (Stage) userTable.getScene().getWindow();
+                    ToastNotification.show(stage, "Utilisateur ajouté avec succès !");
                 } catch (Exception e) {
                     GlobalExceptionHandler.handle(e);
                 }
@@ -146,6 +150,8 @@ public class UserController {
 
                         userService.save(selected);
                         refreshTable();
+                        Stage stage = (Stage) userTable.getScene().getWindow();
+                        ToastNotification.show(stage, "Utilisateur modifié avec succès !");
                     } catch (Exception e) {
                         GlobalExceptionHandler.handle(e);
                     }

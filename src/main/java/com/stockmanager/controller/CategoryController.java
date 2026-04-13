@@ -3,7 +3,9 @@ package com.stockmanager.controller;
 import com.stockmanager.config.GlobalExceptionHandler;
 import com.stockmanager.service.CategoryService;
 import com.stockmanager.model.Category;
+import com.stockmanager.util.ToastNotification;
 import javafx.fxml.FXML;
+import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -82,6 +84,8 @@ public class CategoryController {
 
                     categoryService.save(category);
                     refreshTable();
+                    Stage stage = (Stage) categoryTable.getScene().getWindow();
+                    ToastNotification.show(stage, "Catégorie ajoutée avec succès !");
                 } catch (Exception e) {
                     GlobalExceptionHandler.handle(e);
                 }
@@ -140,6 +144,8 @@ public class CategoryController {
 
                         categoryService.save(selected);
                         refreshTable();
+                        Stage stage = (Stage) categoryTable.getScene().getWindow();
+                        ToastNotification.show(stage, "Catégorie modifiée avec succès !");
                     } catch (Exception e) {
                         GlobalExceptionHandler.handle(e);
                     }

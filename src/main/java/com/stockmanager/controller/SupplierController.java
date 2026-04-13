@@ -3,12 +3,14 @@ package com.stockmanager.controller;
 import com.stockmanager.config.GlobalExceptionHandler;
 import com.stockmanager.service.SupplierService;
 import com.stockmanager.model.Supplier;
+import com.stockmanager.util.ToastNotification;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -101,6 +103,8 @@ public class SupplierController {
 
                     supplierService.save(supplier);
                     refreshTable();
+                    Stage stage = (Stage) supplierTable.getScene().getWindow();
+                    ToastNotification.show(stage, "Fournisseur ajouté avec succès !");
                 } catch (Exception e) {
                     GlobalExceptionHandler.handle(e);
                 }
@@ -173,6 +177,8 @@ public class SupplierController {
 
                         supplierService.save(selected);
                         refreshTable();
+                        Stage stage = (Stage) supplierTable.getScene().getWindow();
+                        ToastNotification.show(stage, "Fournisseur modifié avec succès !");
                     } catch (Exception e) {
                         GlobalExceptionHandler.handle(e);
                     }

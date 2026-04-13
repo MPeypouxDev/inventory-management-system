@@ -10,6 +10,7 @@ import com.stockmanager.model.Category;
 import com.stockmanager.service.StockMovementService;
 import com.stockmanager.util.DateUtils;
 
+import com.stockmanager.util.ToastNotification;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,6 +148,8 @@ public class ProductController {
 
                     productService.save(product);
                     refreshTable();
+                    Stage stage = (Stage) productTable.getScene().getWindow();
+                    ToastNotification.show(stage, "Produit ajouté avec succès !");
                 } catch (Exception e) {
                     GlobalExceptionHandler.handle(e);
                 }
@@ -239,6 +242,8 @@ public class ProductController {
 
                         productService.save(selected);
                         refreshTable();
+                        Stage stage = (Stage) productTable.getScene().getWindow();
+                        ToastNotification.show(stage, "Produit modifié avec succès !");
                     } catch (Exception e) {
                         GlobalExceptionHandler.handle(e);
                     }
@@ -355,10 +360,7 @@ public class ProductController {
         if (file != null) {
             try {
                 exportService.exportProductsToExcel(file.getAbsolutePath());
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Export réussi");
-                alert.setContentText("Le fichier a été exporté avec succès !");
-                alert.showAndWait();
+                ToastNotification.show(stage, "Export Excel réussi !");
             } catch (IOException e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Erreur d'export");
