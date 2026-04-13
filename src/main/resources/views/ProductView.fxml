@@ -28,6 +28,7 @@
             <TableColumn fx:id="stockColumn" text="Stock" prefWidth="80"/>
             <TableColumn fx:id="priceColumn" text="Prix vente" prefWidth="100"/>
             <TableColumn fx:id="categoryColumn" text="Catégorie" prefWidth="150"/>
+            <TableColumn fx:id="statusColumn" text="Statut" prefWidth="60"/>
         </columns>
     </TableView>
 

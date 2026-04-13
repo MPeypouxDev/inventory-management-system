@@ -70,6 +70,9 @@ public class ProductController {
     private TableColumn<Product, String> categoryColumn;
 
     @FXML
+    private TableColumn<Product, String> statusColumn;
+
+    @FXML
     private void handleAdd() {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Ajouter un produit");
@@ -382,6 +385,28 @@ public class ProductController {
                                 cellData.getValue().getCategory().getName() : ""
                 )
         );
+        statusColumn.setCellFactory(column -> new TableCell<Product, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setStyle("");
+                } else if (item.equals("Alerte")) {
+                    setText("Alerte");
+                    setStyle("fx-text-fill: #e74c3c; -fx-font-weight: bold;");
+                } else {
+                    setText("Ok");
+                    setStyle("fx-text-fill: #2ecc71; -fx-font-weight: bold;");
+                }
+            }
+        });
+
+        statusColumn.setCellValueFactory(cellData -> {
+            Product p = cellData.getValue();
+            String status = p.getStockQuantity() <= p.getAlertThreshold() ? "Alerte" : "Ok";
+            return new javafx.beans.property.SimpleStringProperty(status);
+        });
 
         productTable.setRowFactory(tv -> new TableRow<Product>() {
             @Override
