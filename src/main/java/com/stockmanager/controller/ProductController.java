@@ -9,6 +9,7 @@ import com.stockmanager.model.Product;
 import com.stockmanager.model.Category;
 import com.stockmanager.service.StockMovementService;
 import com.stockmanager.util.DateUtils;
+import com.stockmanager.util.Pagination;
 
 import com.stockmanager.util.ToastNotification;
 import javafx.fxml.FXML;
@@ -28,6 +29,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 
 @Component
@@ -71,6 +73,15 @@ public class ProductController {
 
     @FXML
     private TableColumn<Product, String> statusColumn;
+
+    @FXML
+    private Button prevButton;
+
+    @FXML
+    private Button nextButton;
+
+    @FXML
+    private Label pageLabel;
 
     @FXML
     private void handleAdd() {
@@ -161,8 +172,7 @@ public class ProductController {
     }
 
     private void refreshTable() {
-        ObservableList<Product> products = FXCollections.observableArrayList(productService.findAll());
-        productTable.setItems(products);
+        updateTable(productService.findAll());
     }
 
     @FXML
@@ -373,6 +383,32 @@ public class ProductController {
         }
     }
 
+    @FXML
+    private void handleNextPage() {
+        List<Product> all = productService.findAll();
+        pagination.nextPage(all);
+        updateTable(all);
+    }
+
+    @FXML
+    private void handlePreviousPage() {
+        List<Product> all = productService.findAll();
+        pagination.previousPage();
+        updateTable(all);
+    }
+
+    private void updateTable(List<Product> allProducts) {
+        productTable.setItems(FXCollections.observableArrayList(
+                pagination.getPage(allProducts)
+        ));
+        pageLabel.setText("Page " + (pagination.getCurrentPage() + 1) +
+                " / " + pagination.getTotalPages(allProducts));
+        prevButton.setDisable(!pagination.hasPrevious());
+        nextButton.setDisable(!pagination.hasNext(allProducts));
+    }
+
+    private final Pagination<Product> pagination = new Pagination<>(10);
+
     public void initialize() {
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -394,10 +430,10 @@ public class ProductController {
                     setStyle("");
                 } else if (item.equals("Alerte")) {
                     setText("Alerte");
-                    setStyle("fx-text-fill: #e74c3c; -fx-font-weight: bold;");
+                    setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold;");
                 } else {
                     setText("Ok");
-                    setStyle("fx-text-fill: #2ecc71; -fx-font-weight: bold;");
+                    setStyle("-fx-text-fill: #2ecc71; -fx-font-weight: bold;");
                 }
             }
         });
@@ -422,7 +458,6 @@ public class ProductController {
             }
         });
 
-        ObservableList<Product> products = FXCollections.observableArrayList(productService.findAll());
-        productTable.setItems(products);
+        updateTable(productService.findAll());
     }
 }
