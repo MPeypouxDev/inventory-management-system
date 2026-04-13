@@ -32,4 +32,12 @@
             <TableColumn fx:id="userColumn" text="Utilisateur" prefWidth="120"/>
         </columns>
     </TableView>
+
+    <HBox spacing="10">
+        <Button fx:id="prevButton" text="◀ Précédent" onAction="#handlePreviousPage"
+                style="-fx-padding: 8px 15px; -fx-cursor: hand;"/>
+        <Label fx:id="pageLabel" text="Page 1"/>
+        <Button fx:id="nextButton" text="Suivant ▶" onAction="#handleNextPage"
+                style="-fx-padding: 8px 15px; -fx-cursor: hand;"/>
+    </HBox>
 </VBox>

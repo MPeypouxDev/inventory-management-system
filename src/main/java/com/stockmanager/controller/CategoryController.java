@@ -4,8 +4,11 @@ import com.stockmanager.config.GlobalExceptionHandler;
 import com.stockmanager.service.CategoryService;
 import com.stockmanager.model.Category;
 import com.stockmanager.util.ToastNotification;
+import com.stockmanager.util.Pagination;
+
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -18,6 +21,8 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+
+import java.util.List;
 
 @Component
 public class CategoryController {
@@ -42,6 +47,15 @@ public class CategoryController {
 
     @FXML
     private TableColumn<Category, String> descriptionColumn;
+
+    @FXML
+    private Button prevButton;
+
+    @FXML
+    private Button nextButton;
+
+    @FXML
+    private Label pageLabel;
 
     @FXML
     private void handleAdd() {
@@ -94,8 +108,7 @@ public class CategoryController {
     }
 
     private void refreshTable() {
-        ObservableList<Category> categories = FXCollections.observableArrayList(categoryService.findAll());
-        categoryTable.setItems(categories);
+        updateTable(categoryService.findAll());
     }
 
     @FXML
@@ -192,12 +205,37 @@ public class CategoryController {
         }
     }
 
+    @FXML
+    private void handleNextPage() {
+        List<Category> all = categoryService.findAll();
+        pagination.nextPage(all);
+        updateTable(all);
+    }
+
+    @FXML
+    private void handlePreviousPage() {
+        List<Category> all = categoryService.findAll();
+        pagination.previousPage();
+        updateTable(all);
+    }
+
+    private void updateTable(List<Category> allCategories) {
+        categoryTable.setItems(FXCollections.observableArrayList(
+                pagination.getPage(allCategories)
+        ));
+        pageLabel.setText("Page " + (pagination.getCurrentPage() + 1) +
+                " / " + pagination.getTotalPages(allCategories));
+        prevButton.setDisable(!pagination.hasPrevious());
+        nextButton.setDisable(!pagination.hasNext(allCategories));
+    }
+
+    private final Pagination<Category> pagination = new Pagination<>(10);
+
     public void initialize() {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
 
-        ObservableList<Category> categories = FXCollections.observableArrayList(categoryService.findAll());
-        categoryTable.setItems(categories);
+        updateTable(categoryService.findAll());
     }
 }

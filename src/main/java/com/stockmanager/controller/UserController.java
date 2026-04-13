@@ -1,11 +1,13 @@
 package com.stockmanager.controller;
 
 import com.stockmanager.config.GlobalExceptionHandler;
+import com.stockmanager.model.Product;
 import com.stockmanager.model.User;
 import com.stockmanager.service.AuthService;
 import com.stockmanager.service.UserService;
-
 import com.stockmanager.util.ToastNotification;
+import com.stockmanager.util.Pagination;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -16,6 +18,8 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class UserController {
@@ -40,6 +44,15 @@ public class UserController {
 
     @FXML
     private TableColumn<User, String> roleColumn;
+
+    @FXML
+    private Button prevButton;
+
+    @FXML
+    private Button nextButton;
+
+    @FXML
+    private Label pageLabel;
 
     @FXML
     private void handleAdd() {
@@ -97,8 +110,7 @@ public class UserController {
     }
 
     private void refreshTable() {
-        ObservableList<User> users = FXCollections.observableArrayList(userService.findAll());
-        userTable.setItems(users);
+        updateTable(userService.findAll());
     }
 
     @FXML
@@ -215,12 +227,37 @@ public class UserController {
         }
     }
 
+    @FXML
+    private void handleNextPage() {
+        List<User> all = userService.findAll();
+        pagination.nextPage(all);
+        updateTable(all);
+    }
+
+    @FXML
+    private void handlePreviousPage() {
+        List<User> all = userService.findAll();
+        pagination.previousPage();
+        updateTable(all);
+    }
+
+    private void updateTable(List<User> allUsers) {
+        userTable.setItems(FXCollections.observableArrayList(
+                pagination.getPage(allUsers)
+        ));
+        pageLabel.setText("Page " + (pagination.getCurrentPage() + 1) +
+                " / " + pagination.getTotalPages(allUsers));
+        prevButton.setDisable(!pagination.hasPrevious());
+        nextButton.setDisable(!pagination.hasNext(allUsers));
+    }
+
+    private final Pagination<User> pagination = new Pagination<>(10);
+
     public void initialize() {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
         roleColumn.setCellValueFactory(new PropertyValueFactory<>("role"));
 
-        ObservableList<User> users = FXCollections.observableArrayList(userService.findAll());
-        userTable.setItems(users);
+        updateTable(userService.findAll());
     }
 }

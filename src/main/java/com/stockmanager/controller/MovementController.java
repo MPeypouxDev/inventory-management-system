@@ -7,6 +7,7 @@ import com.stockmanager.service.ProductService;
 import com.stockmanager.service.StockMovementService;
 import com.stockmanager.service.ExportService;
 import com.stockmanager.util.DateUtils;
+import com.stockmanager.util.Pagination;
 
 import com.stockmanager.util.ToastNotification;
 import javafx.collections.FXCollections;
@@ -25,6 +26,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Component
 public class MovementController {
@@ -67,6 +69,15 @@ public class MovementController {
 
     @FXML
     private TableColumn<StockMovement, String> userColumn;
+
+    @FXML
+    private Button prevButton;
+
+    @FXML
+    private Button nextButton;
+
+    @FXML
+    private Label pageLabel;
 
     @FXML
     private void handleAdd() {
@@ -153,8 +164,7 @@ public class MovementController {
     }
 
     private void refreshTable() {
-        ObservableList<StockMovement> stockMovements = FXCollections.observableArrayList(stockMovementService.findAll());
-        stockMovementTable.setItems(stockMovements);
+        updateTable(stockMovementService.findAll());
     }
 
     @FXML
@@ -195,6 +205,32 @@ public class MovementController {
         }
     }
 
+    @FXML
+    private void handleNextPage() {
+        List<StockMovement> all = stockMovementService.findAll();
+        pagination.nextPage(all);
+        updateTable(all);
+    }
+
+    @FXML
+    private void handlePreviousPage() {
+        List<StockMovement> all = stockMovementService.findAll();
+        pagination.previousPage();
+        updateTable(all);
+    }
+
+    private void updateTable(List<StockMovement> allMovements) {
+        stockMovementTable.setItems(FXCollections.observableArrayList(
+                pagination.getPage(allMovements)
+        ));
+        pageLabel.setText("Page " + (pagination.getCurrentPage() + 1) +
+                " / " + pagination.getTotalPages(allMovements));
+        prevButton.setDisable(!pagination.hasPrevious());
+        nextButton.setDisable(!pagination.hasNext(allMovements));
+    }
+
+    private final Pagination<StockMovement> pagination = new Pagination<>(10);
+
     public void initialize() {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         productColumn.setCellValueFactory(stockMovementStringCellDataFeatures ->
@@ -223,7 +259,6 @@ public class MovementController {
                 )
         );
 
-        ObservableList<StockMovement> stockMovements = FXCollections.observableArrayList(stockMovementService.findAll());
-        stockMovementTable.setItems(stockMovements);
+        updateTable(stockMovementService.findAll());
     }
 }

@@ -1,9 +1,12 @@
 package com.stockmanager.controller;
 
 import com.stockmanager.config.GlobalExceptionHandler;
+import com.stockmanager.model.Product;
 import com.stockmanager.service.SupplierService;
 import com.stockmanager.model.Supplier;
 import com.stockmanager.util.ToastNotification;
+import com.stockmanager.util.Pagination;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,9 +14,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class SupplierController {
@@ -47,6 +53,15 @@ public class SupplierController {
 
     @FXML
     private TableColumn<Supplier, String> addressColumn;
+
+    @FXML
+    private Button prevButton;
+
+    @FXML
+    private Button nextButton;
+
+    @FXML
+    private Label pageLabel;
 
     @FXML
     private void handleAdd() {
@@ -113,8 +128,7 @@ public class SupplierController {
     }
 
     private void refreshTable() {
-        ObservableList<Supplier> suppliers = FXCollections.observableArrayList(supplierService.findAll());
-        supplierTable.setItems(suppliers);
+        updateTable(supplierService.findAll());
     }
 
     @FXML
@@ -225,6 +239,32 @@ public class SupplierController {
         }
     }
 
+    @FXML
+    private void handleNextPage() {
+        List<Supplier> all = supplierService.findAll();
+        pagination.nextPage(all);
+        updateTable(all);
+    }
+
+    @FXML
+    private void handlePreviousPage() {
+        List<Supplier> all = supplierService.findAll();
+        pagination.previousPage();
+        updateTable(all);
+    }
+
+    private void updateTable(List<Supplier> allSuppliers) {
+        supplierTable.setItems(FXCollections.observableArrayList(
+                pagination.getPage(allSuppliers)
+        ));
+        pageLabel.setText("Page " + (pagination.getCurrentPage() + 1) +
+                " / " + pagination.getTotalPages(allSuppliers));
+        prevButton.setDisable(!pagination.hasPrevious());
+        nextButton.setDisable(!pagination.hasNext(allSuppliers));
+    }
+
+    private final Pagination<Supplier> pagination = new Pagination<>(10);
+
     public void initialize() {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -233,7 +273,6 @@ public class SupplierController {
         mailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
 
-        ObservableList<Supplier> suppliers = FXCollections.observableArrayList(supplierService.findAll());
-        supplierTable.setItems(suppliers);
+        updateTable(supplierService.findAll());
     }
 }

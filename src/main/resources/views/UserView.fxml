@@ -34,6 +34,12 @@
                 style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8px 15px; -fx-cursor: hand;"/>
         <Button text="Historique" onAction="#handleHistory"
                 style="-fx-background-color: #9b59b6; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8px 15px; -fx-cursor: hand;"/>
+
+        <Button fx:id="prevButton" text="◀ Précédent" onAction="#handlePreviousPage"
+                style="-fx-padding: 8px 15px; -fx-cursor: hand;"/>
+        <Label fx:id="pageLabel" text="Page 1"/>
+        <Button fx:id="nextButton" text="Suivant ▶" onAction="#handleNextPage"
+                style="-fx-padding: 8px 15px; -fx-cursor: hand;"/>
     </HBox>
 
 </VBox>
