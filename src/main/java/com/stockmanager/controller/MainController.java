@@ -50,6 +50,9 @@ public class MainController {
     private void showCategories() { loadView("/views/CategoryView.fxml"); }
 
     @FXML
+    private void showUsers() { loadView("/views/UserView.fxml"); }
+
+    @FXML
     private void handleLogout() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/LoginView.fxml"));
@@ -86,6 +89,7 @@ public class MainController {
             case "/views/MovementView.fxml" -> "Mouvements";
             case "/views/CategoryView.fxml" -> "Catégories";
             case "/views/DashboardView.fxml" -> "Tableau de bord";
+            case "/views/UserView.fxml" -> "Utilisateurs";
             default -> "";
         };
     }
