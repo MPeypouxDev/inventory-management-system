@@ -11,7 +11,6 @@ import org.apache.poi.ss.usermodel.*;
 import com.stockmanager.model.Product;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
-import com.itextpdf.text.pdf.PdfWriter;
 import com.stockmanager.model.StockMovement;
 
 import java.io.FileOutputStream;

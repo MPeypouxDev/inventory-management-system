@@ -28,9 +28,9 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Utilisateur introuvable avec l'id :" + id));
 
-        if (user.getRole().equals("ADMIN")) {
+        if (user.getRole() == User.Role.ADMIN) {
             long adminCount = userRepository.findAll().stream()
-                    .filter(u -> u.getRole().equals("ADMIN"))
+                    .filter(u -> u.getRole() == User.Role.ADMIN)
                     .count();
             if (adminCount <= 1) {
                 throw new RuntimeException("Impossible de supprimer le dernier administrateur !");

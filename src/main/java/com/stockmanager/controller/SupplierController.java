@@ -1,7 +1,6 @@
 package com.stockmanager.controller;
 
 import com.stockmanager.config.GlobalExceptionHandler;
-import com.stockmanager.model.Product;
 import com.stockmanager.service.SupplierService;
 import com.stockmanager.model.Supplier;
 import com.stockmanager.util.ToastNotification;

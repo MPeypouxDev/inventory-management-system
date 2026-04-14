@@ -68,64 +68,68 @@ public class DashboardController {
     public void initialize() {
         List<Product> lowStock = productService.findLowStockProducts();
 
-        productCountLabel.setText(String.valueOf(productService.findAll().size()));
-        supplierCountLabel.setText(String.valueOf(supplierService.findAll().size()));
-        alertCountLabel.setText(String.valueOf(lowStock.size()));
-        movementCountLabel.setText(String.valueOf(stockMovementService.findAll().size()));
+        List<Product> products = productService.findAll();
+        productCountLabel.setText(String.valueOf(products.size()));
 
-        List<StockMovement> movements = stockMovementService.findAll();
+        for (Product product : products) {
+            supplierCountLabel.setText(String.valueOf(supplierService.findAll().size()));
+            alertCountLabel.setText(String.valueOf(lowStock.size()));
+            movementCountLabel.setText(String.valueOf(stockMovementService.findAll().size()));
 
-        recentProductColumn.setCellValueFactory(cellData ->
-                new javafx.beans.property.SimpleStringProperty(
-                        cellData.getValue().getProduct() != null ?
-                                cellData.getValue().getProduct().getName() : ""
-                )
-        );
+            List<StockMovement> movements = stockMovementService.findAll();
 
-        recentTypeColumn.setCellValueFactory(cellData ->
-                new javafx.beans.property.SimpleStringProperty(
-                        cellData.getValue().getType() != null ?
-                                cellData.getValue().getType().getLabel() : ""
-                )
-        );
+            recentProductColumn.setCellValueFactory(cellData ->
+                    new javafx.beans.property.SimpleStringProperty(
+                            cellData.getValue().getProduct() != null ?
+                                    cellData.getValue().getProduct().getName() : ""
+                    )
+            );
 
-        recentQuantityColumn.setCellValueFactory(cellData ->
-                new javafx.beans.property.SimpleStringProperty(
-                        String.valueOf(cellData.getValue().getQuantity())
-                )
-        );
+            recentTypeColumn.setCellValueFactory(cellData ->
+                    new javafx.beans.property.SimpleStringProperty(
+                            cellData.getValue().getType() != null ?
+                                    cellData.getValue().getType().getLabel() : ""
+                    )
+            );
 
-        recentDateColumn.setCellValueFactory(cellData ->
-                new javafx.beans.property.SimpleStringProperty(
-                        DateUtils.format(cellData.getValue().getDate())
-                )
-        );
+            recentQuantityColumn.setCellValueFactory(cellData ->
+                    new javafx.beans.property.SimpleStringProperty(
+                            String.valueOf(cellData.getValue().getQuantity())
+                    )
+            );
 
-        recentMovementsTable.setItems(
-                javafx.collections.FXCollections.observableArrayList(movements)
-        );
+            recentDateColumn.setCellValueFactory(cellData ->
+                    new javafx.beans.property.SimpleStringProperty(
+                            DateUtils.format(cellData.getValue().getDate())
+                    )
+            );
 
-        // Graphique stock par produit
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Stock actuel");
-        for (Product product : productService.findAll()) {
-            series.getData().add(
-                    new XYChart.Data<>(product.getName(), product.getStockQuantity())
+            recentMovementsTable.setItems(
+                    javafx.collections.FXCollections.observableArrayList(movements)
+            );
+
+            // Graphique stock par produit
+            XYChart.Series<String, Number> series = new XYChart.Series<>();
+            series.setName("Stock actuel");
+            for (Product product : productService.findAll()) {
+                series.getData().add(
+                        new XYChart.Data<>(product.getName(), product.getStockQuantity())
+                );
+            }
+            stockBarChart.getData().add(series);
+
+            // Graphique réparition mouvements
+            long entries = movements.stream()
+                    .filter(m -> m.getType() == StockMovement.MovementType.ENTRY)
+                    .count();
+            long outgoings = movements.stream()
+                    .filter(m -> m.getType() == StockMovement.MovementType.OUTGOING)
+                    .count();
+
+            movementPieChart.getData().addAll(
+                    new PieChart.Data("Entrées", entries),
+                    new PieChart.Data("Sorties", outgoings)
             );
         }
-        stockBarChart.getData().add(series);
-
-        // Graphique réparition mouvements
-        long entries = stockMovementService.findAll().stream()
-                .filter(m -> m.getType() == StockMovement.MovementType.ENTRY)
-                .count();
-        long outgoings = stockMovementService.findAll().stream()
-                .filter(m -> m.getType() == StockMovement.MovementType.OUTGOING)
-                .count();
-
-        movementPieChart.getData().addAll(
-                new PieChart.Data("Entrées", entries),
-                new PieChart.Data("Sorties", outgoings)
-        );
     }
 }

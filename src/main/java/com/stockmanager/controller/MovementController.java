@@ -149,7 +149,6 @@ public class MovementController {
                     stockMovement.setProduct(productCombo.getValue());
                     stockMovement.setType(typeCombo.getValue());
                     stockMovement.setQuantity(Integer.parseInt(quantityField.getText()));
-                    stockMovement.setDate(LocalDateTime.now());
                     stockMovement.setReason(reasonField.getText());
 
                     stockMovementService.addMovement(stockMovement);

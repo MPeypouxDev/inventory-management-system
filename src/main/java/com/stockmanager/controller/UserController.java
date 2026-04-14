@@ -1,7 +1,6 @@
 package com.stockmanager.controller;
 
 import com.stockmanager.config.GlobalExceptionHandler;
-import com.stockmanager.model.Product;
 import com.stockmanager.model.StockMovement;
 import com.stockmanager.model.User;
 import com.stockmanager.service.AuthService;

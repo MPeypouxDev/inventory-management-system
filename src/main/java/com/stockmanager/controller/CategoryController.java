@@ -177,7 +177,7 @@ public class CategoryController {
         } else {
             Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
             confirm.setTitle("Confirmation");
-            confirm.setContentText("Voulez-vous vraiment supprimer " + selected.getName());
+            confirm.setContentText("Voulez-vous vraiment supprimer " + selected.getName() + " ?");
             confirm.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
 
