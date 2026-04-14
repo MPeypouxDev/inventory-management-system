@@ -37,6 +37,6 @@ public class GlobalExceptionHandler implements Thread.UncaughtExceptionHandler {
         if (throwable.getMessage() != null && !throwable.getMessage().isEmpty()) {
             return throwable.getMessage();
         }
-        return "Une erreur innatendue s'est produite. Veuillez réessayer.";
+        return "Une erreur inattendue s'est produite. Veuillez réessayer.";
     }
 }

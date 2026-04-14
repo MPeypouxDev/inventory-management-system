@@ -36,6 +36,10 @@ public class StockMovementService {
         return stockMovementRepository.findByUserId(userId);
     }
 
+    public List<StockMovement> findTop5() {
+        return stockMovementRepository.findTop5ByOrderByDateDesc();
+    }
+
     @Transactional
     public StockMovement addMovement(StockMovement movement) {
         Product product = productRepository.findById(movement.getProduct().getId())
