@@ -80,6 +80,18 @@ public class MovementController {
     private Label pageLabel;
 
     @FXML
+    private ComboBox<String> typeFilter;
+
+    @FXML
+    private ComboBox<String> productFilter;
+
+    @FXML
+    private DatePicker startDateFilter;
+
+    @FXML
+    private DatePicker endDateFilter;
+
+    @FXML
     private void handleAdd() {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Ajouter un mouvement");
@@ -230,6 +242,45 @@ public class MovementController {
 
     private final Pagination<StockMovement> pagination = new Pagination<>(10);
 
+    @FXML
+    private void handleFilter() {
+        List<StockMovement> all = stockMovementService.findAll();
+
+        List<StockMovement> filtered = all.stream()
+                .filter(m -> {
+                    String type = typeFilter.getValue();
+                    if (type != null && !type.equals("Tous")) {
+                        if (!m.getType().getLabel().equals(type)) return false;
+                    }
+
+                    String product = productFilter.getValue();
+                    if (product != null && !product.equals("Tous")) {
+                        if (m.getProduct() == null || !m.getProduct().getName().equals(product)) return false;
+                    }
+
+                    if (startDateFilter.getValue() != null) {
+                        if (m.getDate().toLocalDate().isBefore(startDateFilter.getValue())) return false;
+                    }
+
+                    if (endDateFilter.getValue() != null) {
+                        if (m.getDate().toLocalDate().isAfter(endDateFilter.getValue())) return false;
+                    }
+                    return true;
+                })
+                .toList();
+
+        stockMovementTable.setItems(FXCollections.observableArrayList(filtered));
+    }
+
+    @FXML
+    private void handleResetFilters() {
+        typeFilter.setValue(null);
+        productFilter.setValue(null);
+        startDateFilter.setValue(null);
+        endDateFilter.setValue(null);
+        refreshTable();
+    }
+
     public void initialize() {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         productColumn.setCellValueFactory(stockMovementStringCellDataFeatures ->
@@ -256,6 +307,14 @@ public class MovementController {
                         cellData.getValue().getUser() != null ?
                                 cellData.getValue().getUser().getUsername() : ""
                 )
+        );
+
+        typeFilter.getItems().addAll("Tous", "Entrée", "Sortie");
+        productFilter.getItems().add("Tous");
+        productFilter.getItems().addAll(
+                productService.findAll().stream()
+                        .map(p -> p.getName())
+                        .toList()
         );
 
         updateTable(stockMovementService.findAll());

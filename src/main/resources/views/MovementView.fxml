@@ -21,6 +21,19 @@
                 style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8px 15px; -fx-cursor: hand;"/>
     </HBox>
 
+    <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 0 0 10 0;"/>
+        <ComboBox fx:id="typeFilter" promptText="Type"
+                  onAction="#handleFilter" prefWidth="120"/>
+        <ComboBox fx:id="productFilter" promptText="Produit"
+                  onAction="#handleFilter" prefWidth="180"/>
+        <DatePicker fx:id="startDateFilter" promptText="Date début"
+                    onAction="#handleFilter" prefWidth="150"/>
+        <DatePicker fx:id="endDateFilter" promptText="Date fin"
+                    onAction="#handleFilter" prefWidth="150"/>
+        <Button text="Réinitialiser" onAction="#handleResetFilters"
+                style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-padding: 8px 15px; -fx-cursor: hand;"/>
+    <HBox/>
+
     <TableView fx:id="stockMovementTable" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
