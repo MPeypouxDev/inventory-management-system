@@ -32,6 +32,10 @@ public class StockMovementService {
         return stockMovementRepository.findByProductId(productId);
     }
 
+    public List<StockMovement> findByUser(Long userId) {
+        return stockMovementRepository.findByUserId(userId);
+    }
+
     @Transactional
     public StockMovement addMovement(StockMovement movement) {
         Product product = productRepository.findById(movement.getProduct().getId())

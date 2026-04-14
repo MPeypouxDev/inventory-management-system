@@ -2,9 +2,12 @@ package com.stockmanager.controller;
 
 import com.stockmanager.config.GlobalExceptionHandler;
 import com.stockmanager.model.Product;
+import com.stockmanager.model.StockMovement;
 import com.stockmanager.model.User;
 import com.stockmanager.service.AuthService;
+import com.stockmanager.service.StockMovementService;
 import com.stockmanager.service.UserService;
+import com.stockmanager.util.DateUtils;
 import com.stockmanager.util.ToastNotification;
 import com.stockmanager.util.Pagination;
 
@@ -29,6 +32,9 @@ public class UserController {
 
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    private StockMovementService stockMovementService;
 
     @FXML
     TableView<User> userTable;
@@ -221,9 +227,55 @@ public class UserController {
             dialog.setTitle("Historique de " + selected.getUsername());
             dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
 
-            TableView<User> table = new TableView<>();
+            TableView<StockMovement> table = new TableView<>();
             table.setPrefWidth(600);
             table.setPrefHeight(400);
+
+            TableColumn<StockMovement, String> productCol = new TableColumn<>("Produit");
+            productCol.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(
+                        cellData.getValue().getProduct().getName()
+                )
+            );
+
+            TableColumn<StockMovement, String> typeCol = new TableColumn<>("Type");
+            typeCol.setCellValueFactory(cellData ->
+                    new javafx.beans.property.SimpleStringProperty(
+                            cellData.getValue().getType().getLabel()
+                    )
+            );
+
+            TableColumn<StockMovement, String> quantityCol = new TableColumn<>("Quantité");
+            quantityCol.setCellValueFactory(cellData ->
+                    new javafx.beans.property.SimpleStringProperty(
+                            String.valueOf(cellData.getValue().getQuantity())
+                    )
+            );
+
+            TableColumn<StockMovement, String> dateCol = new TableColumn<>("Date");
+            dateCol.setCellValueFactory(cellData ->
+                    new javafx.beans.property.SimpleStringProperty(
+                            DateUtils.format(cellData.getValue().getDate())
+                    )
+            );
+
+            TableColumn<StockMovement, String> reasonCol = new TableColumn<>("Raison");
+            reasonCol.setCellValueFactory(cellData ->
+                    new javafx.beans.property.SimpleStringProperty(
+                            cellData.getValue().getReason()
+                    )
+            );
+
+            table.getColumns().addAll(productCol, typeCol, quantityCol, dateCol, reasonCol);
+
+            table.setItems(FXCollections.observableArrayList(
+                    stockMovementService.findByUser(selected.getId())
+            ));
+
+            dialog.getDialogPane().setContent(table);
+            dialog.showAndWait();
+
+
         }
     }
 
