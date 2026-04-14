@@ -27,7 +27,7 @@ public class ToastNotification {
             StackPane pane = new StackPane(label);
             popup.getContent().add(pane);
 
-            double x = stage.getX() + stage.getWidth() / 2 - 150;
+            double x = stage.getX() + stage.getWidth() / 2 - 100;
             double y = stage.getY() + stage.getHeight() - 80;
             popup.show(stage, x, y);
 

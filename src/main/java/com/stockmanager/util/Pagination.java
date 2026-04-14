@@ -18,6 +18,7 @@ public class Pagination<T> {
     }
 
     public int getTotalPages(List<T> allItems) {
+        if (allItems.isEmpty()) return 1;
         return (int) Math.ceil((double) allItems.size() / pageSize);
     }
 
