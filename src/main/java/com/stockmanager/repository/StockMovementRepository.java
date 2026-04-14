@@ -11,4 +11,5 @@ public interface StockMovementRepository extends JpaRepository<StockMovement, Lo
     List<StockMovement> findByProductId(Long productId);
     List<StockMovement> findByProductNameContainingIgnoreCase(String name);
     List<StockMovement> findByUserId(Long userId);
+    List<StockMovement> findTop5ByOrderByDateDesc();
 }
