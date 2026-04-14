@@ -2,7 +2,7 @@ package com.stockmanager.config;
 
 import org.springframework.stereotype.Component;
 
-import com.stockmanager.model.User;;
+import com.stockmanager.model.User;
 
 @Component
 public class SessionManager {
