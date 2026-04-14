@@ -18,7 +18,7 @@ public class StockMovement {
     private MovementType type;
 
     private Integer quantity;
-    private LocalDateTime date;
+    private LocalDateTime date = LocalDateTime.now();
     private String reason;
 
     @ManyToOne

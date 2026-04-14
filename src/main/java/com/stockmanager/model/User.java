@@ -2,7 +2,6 @@ package com.stockmanager.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Generated;
 
 import java.util.List;
 
@@ -26,7 +25,7 @@ public class User {
     private Role role;
 
     @OneToMany(mappedBy = "user")
-    private List<StockMovement> movemements;
+    private List<StockMovement> movements;
 
     public enum Role {
         ADMIN, USER

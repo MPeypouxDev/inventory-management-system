@@ -7,7 +7,6 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "products")
-
 public class Product {
 
     @Id
@@ -17,9 +16,13 @@ public class Product {
     @Column(nullable = false)
     private String name;
 
-    private String description;
+    @Column(nullable = false)
     private Double purchasePrice;
+
+    @Column(nullable = false)
     private Double salePrice;
+
+    private String description;
     private Integer stockQuantity;
     private Integer alertThreshold;
 
