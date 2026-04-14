@@ -1,6 +1,7 @@
 package com.stockmanager.service;
 
 import com.itextpdf.text.Font;
+import com.stockmanager.util.DateUtils;
 import lombok.RequiredArgsConstructor;
 
 import org.apache.poi.ss.usermodel.Workbook;
@@ -94,7 +95,7 @@ public class ExportService {
                 table.addCell(movement.getProduct() != null ? movement.getProduct().getName() : "");
                 table.addCell(movement.getType() != null ? movement.getType().getLabel() : "");
                 table.addCell(String.valueOf(movement.getQuantity()));
-                table.addCell(movement.getDate() != null ? movement.getDate().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : "");
+                table.addCell(DateUtils.format(movement.getDate()));
                 table.addCell(movement.getReason() != null ? movement.getReason() : "");
             }
 
