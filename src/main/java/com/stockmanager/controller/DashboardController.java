@@ -66,70 +66,62 @@ public class DashboardController {
     private TableView<StockMovement> recentMovementsTable;
 
     public void initialize() {
-        List<Product> lowStock = productService.findLowStockProducts();
-
         List<Product> products = productService.findAll();
+        List<Product> lowStock = productService.findLowStockProducts();
+        List<StockMovement> movements = stockMovementService.findAll();
+
         productCountLabel.setText(String.valueOf(products.size()));
+        supplierCountLabel.setText(String.valueOf(supplierService.findAll().size()));
+        alertCountLabel.setText(String.valueOf(lowStock.size()));
+        movementCountLabel.setText(String.valueOf(movements.size()));
 
+        recentProductColumn.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(
+                        cellData.getValue().getProduct() != null ?
+                                cellData.getValue().getProduct().getName() : ""
+                )
+        );
+        recentTypeColumn.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(
+                        cellData.getValue().getType() != null ?
+                                cellData.getValue().getType().getLabel() : ""
+                )
+        );
+        recentQuantityColumn.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(
+                        String.valueOf(cellData.getValue().getQuantity())
+                )
+        );
+        recentDateColumn.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(
+                        DateUtils.format(cellData.getValue().getDate())
+                )
+        );
+        recentMovementsTable.setItems(
+                javafx.collections.FXCollections.observableArrayList(movements)
+        );
+
+        // Graphique stock par produit
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Stock actuel");
         for (Product product : products) {
-            supplierCountLabel.setText(String.valueOf(supplierService.findAll().size()));
-            alertCountLabel.setText(String.valueOf(lowStock.size()));
-            movementCountLabel.setText(String.valueOf(stockMovementService.findAll().size()));
-
-            List<StockMovement> movements = stockMovementService.findAll();
-
-            recentProductColumn.setCellValueFactory(cellData ->
-                    new javafx.beans.property.SimpleStringProperty(
-                            cellData.getValue().getProduct() != null ?
-                                    cellData.getValue().getProduct().getName() : ""
-                    )
-            );
-
-            recentTypeColumn.setCellValueFactory(cellData ->
-                    new javafx.beans.property.SimpleStringProperty(
-                            cellData.getValue().getType() != null ?
-                                    cellData.getValue().getType().getLabel() : ""
-                    )
-            );
-
-            recentQuantityColumn.setCellValueFactory(cellData ->
-                    new javafx.beans.property.SimpleStringProperty(
-                            String.valueOf(cellData.getValue().getQuantity())
-                    )
-            );
-
-            recentDateColumn.setCellValueFactory(cellData ->
-                    new javafx.beans.property.SimpleStringProperty(
-                            DateUtils.format(cellData.getValue().getDate())
-                    )
-            );
-
-            recentMovementsTable.setItems(
-                    javafx.collections.FXCollections.observableArrayList(movements)
-            );
-
-            // Graphique stock par produit
-            XYChart.Series<String, Number> series = new XYChart.Series<>();
-            series.setName("Stock actuel");
-            for (Product product : productService.findAll()) {
-                series.getData().add(
-                        new XYChart.Data<>(product.getName(), product.getStockQuantity())
-                );
-            }
-            stockBarChart.getData().add(series);
-
-            // Graphique réparition mouvements
-            long entries = movements.stream()
-                    .filter(m -> m.getType() == StockMovement.MovementType.ENTRY)
-                    .count();
-            long outgoings = movements.stream()
-                    .filter(m -> m.getType() == StockMovement.MovementType.OUTGOING)
-                    .count();
-
-            movementPieChart.getData().addAll(
-                    new PieChart.Data("Entrées", entries),
-                    new PieChart.Data("Sorties", outgoings)
+            series.getData().add(
+                    new XYChart.Data<>(product.getName(), product.getStockQuantity())
             );
         }
+        stockBarChart.getData().add(series);
+
+        // Graphique répartition mouvements
+        long entries = movements.stream()
+                .filter(m -> m.getType() == StockMovement.MovementType.ENTRY)
+                .count();
+        long outgoings = movements.stream()
+                .filter(m -> m.getType() == StockMovement.MovementType.OUTGOING)
+                .count();
+
+        movementPieChart.getData().addAll(
+                new PieChart.Data("Entrées", entries),
+                new PieChart.Data("Sorties", outgoings)
+        );
     }
 }
