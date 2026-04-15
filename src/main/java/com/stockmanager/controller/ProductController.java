@@ -84,6 +84,12 @@ public class ProductController {
     private Label pageLabel;
 
     @FXML
+    private ComboBox<String> categoryFilter;
+
+    @FXML
+    private ComboBox<String> statusFilter;
+
+    @FXML
     private void handleAdd() {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Ajouter un produit");
@@ -409,6 +415,36 @@ public class ProductController {
 
     private final Pagination<Product> pagination = new Pagination<>(10);
 
+    @FXML
+    private void handleFilter() {
+        List<Product> all = productService.findAll();
+
+        List<Product> filtered = all.stream()
+                .filter(p -> {
+                    String category = categoryFilter.getValue();
+                    if (category != null && !category.equals("Toutes")) {
+                        if (!p.getCategory().getName().equals(category)) return false;
+                    }
+
+                    String status = statusFilter.getValue();
+                    if (status != null && !status.equals("Tous")) {
+                        if (status.equals("Alerte") && p.getStockQuantity() > p.getAlertThreshold()) return false;
+                        if (status.equals("Ok") && p.getStockQuantity() <= p.getAlertThreshold()) return false;
+                    }
+                    return true;
+                })
+                .toList();
+
+        productTable.setItems(FXCollections.observableArrayList(filtered));
+    }
+
+    @FXML
+    private void handleResetFilters() {
+        categoryFilter.setValue(null);
+        statusFilter.setValue(null);
+        refreshTable();
+    }
+
     public void initialize() {
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -457,6 +493,14 @@ public class ProductController {
                 }
             }
         });
+
+        categoryFilter.getItems().add("Toutes");
+        categoryFilter.getItems().addAll(
+                categoryService.findAll().stream()
+                        .map(c -> c.getName())
+                        .toList()
+        );
+        statusFilter.getItems().addAll("Tous", "Alerte", "Ok");
 
         updateTable(productService.findAll());
     }
