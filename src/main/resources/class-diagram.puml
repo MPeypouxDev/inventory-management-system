@@ -1,0 +1,61 @@
+@startuml
+title Diagramme de Classes - Gestion de Stock
+
+class Product {
+- Long id
+- String name
+- String description
+- Double purchasePrice
+- Double salePrice
+- Integer stockQuantity
+- Integer alertThreshold
+}
+
+class Category {
+- Long id
+- String name
+- String description
+}
+
+class Supplier {
+- Long id
+- String name
+- String contact
+- String telephone
+- String email
+- String address
+}
+
+class User {
+- Long id
+- String username
+- String password
+- Role role
+}
+
+class StockMovement {
+- Long id
+- MovementType type
+- Integer quantity
+- LocalDateTime date
+- String reason
+}
+
+enum Role {
+    ADMIN
+    USER
+}
+
+enum MovementType {
+    ENTRY
+    OUTGOING
+}
+
+Product "many" -- "1" Category
+Product "many" -- "1" Supplier
+StockMovement "many" -- "1" Product
+StockMovement "many" -- "1" User
+User --> Role
+StockMovement --> MovementType
+
+@enduml
