@@ -1,0 +1,181 @@
+\documentclass[12pt, a4paper]{article}
+
+% Packages essentiels
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{geometry}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+
+% Marges
+\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
+
+% Couleurs
+\definecolor{primary}{RGB}{52, 152, 219}
+\definecolor{dark}{RGB}{44, 62, 80}
+
+% En-tête et pied de page
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Gestion de Stock}
+\lhead{Manuel Utilisateur}
+\rfoot{Page \thepage}
+
+% Titre des sections en couleur
+\titleformat{\section}
+	{\color{dark}\Large\bfseries}
+	{\thesection}{1em}{}
+	
+\begin{document}
+	
+	% Page de titre
+	\begin{titlepage}
+		\centering
+		\vspace*{2cm}
+		{\Huge\bfseries\color{dark} Manuel Utilisateur\\[0.5cm]}
+		{\Large\color{primary} Application de Gestion de Stock\\[2cm]}
+		\rule{\linewidth}{0.5mm}\\[0.5cm]
+		{\large Version 1.0\\[0.3cm]}
+		{\large \today\\[0.5cm]}
+		\rule{\linewidth}{0.5mm}\\[2cm]
+		{\large Développé par \\[0.3cm]}
+		{\Large\bfseries Mathys Peypoux\\[1cm]}
+		\vfill
+		{\large Bac+3 Intelligence Artificielle \& Big Data}
+	\end{titlepage}
+	
+	% Table des matières
+	\newpage
+	\tableofcontents
+	\newpage
+	
+	% 1. Introduction
+	\section{Introduction}
+	\subsection{Présentation de l'application}
+	L'application de Gestion de Stock est une application desktop développée en Java 21 avec JavaFX et Spring Boot. Elle permet de gérer les produits, fournisseurs, mouvements de stock et utilisateurs d'une entreprise.
+	
+	\subsection{Prérequis système}
+	\begin{itemize}
+		\item Système d'exploitation : Windows 10/11
+		\item Java 21 ou supérieur
+		\item 4 Go de RAM minimum
+		\item 500 Mo d'espace disque
+	\end{itemize}
+		
+	\subsection{Lancement de l'application}
+	Pour lancer l'application, double-cliquez sur le fichier \textbf{stock-manager.exe}.
+	
+	% 2. Authentification
+	\section{Authentification}
+	\subsection{Se connecter}
+	Au lancement de l'application, un écran de connexion s'affiche. Saisissez votre \textbf{nom d'utilisateur} et votre \textbf{mot de passe} puis clique sur \textbf{Se connecter}.
+	
+	Les comptes disponibles par défaut sont :
+	\begin{itemize}
+		\item \textbf{Administrateur} : login \texttt{admin} / mot de passe \texttt{admin}
+		\item \textbf{Utilisateur} : login \texttt{user} / mot de passe \texttt{user}
+	\end{itemize}
+	
+	\subsection{Se déconnecter}
+	Cliquez sur \textbf{Déconnexion} dans le menu de navigation gauche.
+	
+	% 3. Dashboard
+	\section{Dashboard}
+	Le dashboard est la page d'accueil de l'application. Il affiche :
+	\begin{itemize}
+		\item Le nombre total de produits
+		\item Le nombre de fournisseurs
+		\item Le nombre d'alertes stock bas
+		\item Le nombre total de mouvements
+		\item Un graphique des stocks par produit
+		\item Un graphique de répartition des mouvements
+	\end{itemize}
+	
+	% 4. Gestion des Produits
+	\section{Gestion des Produits}
+	\subsection{Consulter les produits}
+	Cliquez sur \textbf{Produits} dans le menu de navigation. Le tableau affiche tous les produits avec leur stock, prix de vente, catégorie et statut.
+	
+	Les produits en \textcolor{red}{\textbf{alerte stock}} sont surlignés en rouge.
+	
+	\subsection{Ajouter un produit}
+	Cliquez sur \textbf{+ Ajouter} et remplissez les champs obligatoires :
+	\begin{itemize}
+		\item Nom
+		\item Prix de vente
+		\item Stock initial
+		\item Seuil d'alerte
+		\item Catégorie
+	\end{itemize}
+	
+	\subsection{Modifier un produit}
+	Sélectionnez un produit dans le tableau puis cliquez sur \textbf{Modifier}.
+	
+	\subsection{Supprimer un produit}
+	Sélectionnez un produit puis cliquez sur \textbf{Supprimer}. Une confirmation est demandée. Un produit ayant des mouvements de stock ne peut pas être supprimé.
+	
+	\subsection{Filtrer les produits}
+	Utilisez les filtres en haut du tableau pour filtrer par \textbf{catégorie} ou par \textbf{statut} (OK / Alerte).
+	
+	\subsection{Historique d'un produit}
+	Sélectionnez un produit puis cliquez sur \textbf{Historique} pour voir tous ses mouvements de stock.
+	
+	\subsection{Export Excel}
+	Cliquez sur \textbf{Export Excel} pour exporter la liste des produits au format \textbf{.xlsx}.
+	
+	% 5. Gestion des Mouvements
+	\section{Gestion des Mouvements de Stock}
+	\subsection{Ajouter un mouvement}
+	Cliquez sur \textbf{+ Ajouter} et remplissez :
+	\begin{itemize}
+		\item Produit concerné
+		\item Type : \textbf{Entrée} ou \textbf{Sortie}
+		\item Quantité
+		\item Raison (optionnel)
+	\end{itemize}
+	
+	\textbf{Important} : une sortie est impossible si le stock disponible est insuffisant.
+	
+	\subsection{Filtrer les mouvements}
+	Filtrez par \textbf{type}, \textbf{produit}, \textbf{date de début} et \textbf{date de fin}.
+	
+	\subsection{Export PDF}
+	Cliquez sur \textbf{Export PDF} pour exporter les mouvements au format \texttt{.pdf}.
+	
+	% 6. Gestion des Fournisseurs
+	\section{Gestion des Fournisseurs}
+	Cliquez sur \textbf{Fournisseurs} dans le menu. Vous pouvez ajouter, modifier et supprimer des fournisseurs. Un fournisseur ayant des produits associés ne peut pas être supprimé.
+	
+	% 7. Gestion des Catégories
+	\section{Gestion des Catégories}
+	Cliquez sur \textbf{Catégories} dans le menu. Vous pouvez ajouter, modifier et supprimer des catégories. Une catégorie ayant des produits associés ne peut pas être supprimée.
+	
+	% 8. Gestion des Utilisateurs
+	\section{Gestion des Utilisateurs}
+	\textit{Accessible uniquement aux administrateurs.}\\[0.3cm]
+	Cliquez sur \textbf{Utilisateurs} dans le menu. Vous pouvez :
+	\begin{itemize}
+		\item Ajouter un utilisateur avec son rôle (ADMIN ou USER)
+		\item Modifier le nom et le rôle d'un utilisateur
+		\item Supprimer un utilisateur
+		\item Consulter l'historique des mouvements d'un utilisateur
+	\end{itemize}
+	
+	\textbf{Important} : le dernier administrateur ne peut pas être supprimé.
+	
+	% 9. Résolution des problèmes
+	\section{Résolution des problèmes courants}
+	\begin{itemize}
+		\item \textbf{Impossible de supprimer un produit} : le produit possède des mouvements de stock associés.
+		\item \textbf{Stock insuffisant} : la quantité demandée en sortie dépasse le stock disponible.
+		\item \textbf{Impossible de supprimer le dernier admin} : au moins un administrateur doit exister.
+		\item \textbf{Champs obligatoires manquants} : tous les champs marqués comme obligatoire doivent être remplis.
+	\end{itemize}
+	
+\end{document}
+	
+	
