@@ -129,3 +129,16 @@ INSERT INTO products (alert_threshold, category_id, description, name, purchase_
 SELECT 5, c.id, 'Cartouche toner noir compatible', 'Toner Noir', 25.00, 44.99, 4, s.id
 FROM categories c, suppliers s WHERE c.name = 'Impression' AND s.name = 'TechPro'
                                  AND NOT EXISTS (SELECT 1 FROM products WHERE name = 'Toner Noir');
+
+-- Mouvements de stock
+INSERT INTO movements_stock (date, quantity, reason, type, product_id, user_id)
+SELECT NOW(), 5, 'Réapprovisionnement initial', 'ENTRY', p.id, u.id
+FROM products p, users u
+WHERE p.name = 'Laptop Pro 15' AND u.username = 'admin'
+  AND NOT EXISTS (SELECT 1 FROM movements_stock WHERE product_id = p.id AND reason = 'Réapprovisionnement initial');
+
+INSERT INTO movements_stock (date, quantity, reason, type, product_id, user_id)
+SELECT NOW(), 2, 'Vente client', 'OUTGOING', p.id, u.id
+FROM products p, users u
+WHERE p.name = 'Souris Ergonomique' AND u.username = 'admin'
+  AND NOT EXISTS (SELECT 1 FROM movements_stock WHERE product_id = p.id AND reason = 'Vente client');

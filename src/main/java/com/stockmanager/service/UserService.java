@@ -26,7 +26,7 @@ public class UserService {
 
     public void delete(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable avec l'id :" + id));
+                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable avec l'id : " + id));
 
         if (user.getRole() == User.Role.ADMIN) {
             long adminCount = userRepository.findAll().stream()

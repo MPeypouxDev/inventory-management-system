@@ -76,4 +76,38 @@ public class ProductServiceTest {
         productService.delete(1L);
         verify(productRepository, times(1)).delete(testProduct);
     }
+
+    @Test
+    @DisplayName("findLowStockProducts() retourne seulement les produits en alerte")
+    void findLowStockProducts_shouldReturnOnly_whenProductsAreLowStock() {
+        Product lowStockProduct = new Product();
+        lowStockProduct.setId(1L);
+        lowStockProduct.setName("Tapis de souris");
+        lowStockProduct.setStockQuantity(2);
+        lowStockProduct.setAlertThreshold(3);
+
+        Product highStockProduct = new Product();
+        highStockProduct.setId(2L);
+        highStockProduct.setName("Câble HDMI");
+        highStockProduct.setStockQuantity(25);
+        highStockProduct.setAlertThreshold(5);
+
+        when(productRepository.findAll()).thenReturn(List.of(lowStockProduct, highStockProduct));
+
+        List<Product> result = productService.findLowStockProducts();
+
+        assertEquals(1, result.size());
+        assertEquals("Tapis de souris", result.getFirst().getName());
+    }
+
+    @Test
+    @DisplayName("searchByName() retourne seulement le produit avec le nom exact saisi")
+    void searchByName_shouldReturnOnlyProduct_whenTheNameIsExactSame() {
+        when(productRepository.findByNameContainingIgnoreCase("Laptop")).thenReturn(List.of(testProduct));
+
+        List<Product> result = productService.searchByName("Laptop");
+
+        assertEquals(1, result.size());
+        assertEquals("Laptop Pro 15", result.getFirst().getName());
+    }
 }

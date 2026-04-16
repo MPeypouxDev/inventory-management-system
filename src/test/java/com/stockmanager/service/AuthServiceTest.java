@@ -66,4 +66,15 @@ public class AuthServiceTest {
         Optional<User> result = authService.login("Mathys", "001129SYHTAMfoot**");
         assertFalse(result.isEmpty());
     }
+
+    @Test
+    @DisplayName("hashPassword() doit retourner un hash BCrypt valide")
+    void hashPassword_shouldReturnValidBCryptHash() {
+        when(passwordEncoder.encode("motDePasse")).thenReturn("$2a$10$hashedPassword");
+
+        String result = authService.hashPassword("motDePasse");
+
+        assertNotNull(result);
+        assertEquals("$2a$10$hashedPassword", result);
+    }
 }
