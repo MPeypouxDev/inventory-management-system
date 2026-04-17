@@ -35,3 +35,7 @@ build/
 # Base de données H2
 data/
 target/
+
+# Launch4j
+*.exe
+
